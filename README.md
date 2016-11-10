@@ -1,5 +1,5 @@
 # wsestados
-Uma api simples implementada em nodejs receber as cidades de um estado específico
+Api simples implementada em nodejs que recebe um estado (Sigla ou nome) e devolve as cidades
 
 # como usar
 baixe a api ou use-a online com o deploy no heroku
