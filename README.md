@@ -1,5 +1,5 @@
 # wsestados
-Uma api simples implementada por mim para que as pessoas consigam de forma fácil conseguir oque querem achar, as cidades de um estado brasileiro específico
+Uma api simples implementada em nodejs receber as cidades de um estado específico
 
 # como usar
 baixe a api ou use-a online com o deploy no heroku
