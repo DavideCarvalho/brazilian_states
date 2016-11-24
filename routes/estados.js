@@ -1,5 +1,5 @@
-module.exports = function(app){
-  var api = app.api.estados;
+module.exports = (app) => {
+  const api = app.api.estados;
 
   app.get('/estado/:uf', api.mostraCidadeEstado);
 };
