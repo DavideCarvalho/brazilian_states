@@ -1,8 +1,9 @@
-var api = {};
+const api = {}
 
-var ac =
-{cidades:[
-  "Acrelândia",
+// coloque as outras nesse formato, porém crie 1 módulo para CADA ESTADO, pois será mais fácil de se achar e modificar algo.
+
+const ac = { cidades:
+[ "Acrelândia",
   "Assis Brasil",
   "Brasiléia",
   "Bujari",
@@ -23,8 +24,8 @@ var ac =
   "Sena Madureira",
   "Senador Guiomard",
   "Tarauacá",
-  "Xapuri"]
-};
+  "Xapuri"
+]}
 
 var al =
 {cidades:[
@@ -1251,7 +1252,7 @@ var ma =
   "Godofredo Viana",
   "Gonçalves Dias",
   "Governador Archer",
-  "Governador Edison Lobão",
+  "Governador Edison Lobão (Golpista)",
   "Governador Eugênio Barros",
   "Governador Luiz Rocha",
   "Governador Newton Bello",

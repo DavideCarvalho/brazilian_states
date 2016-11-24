@@ -1,5 +1,1 @@
-module.exports = function(app){
-  var api = app.api.estados;
-
-  app.get('/estado/:uf', api.mostraCidadeEstado);
-};
+module.exports = (app) => app.get('/estado/:uf', app.api.estados.mostraCidadeEstado)
