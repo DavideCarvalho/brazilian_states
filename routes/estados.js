@@ -1,5 +1,1 @@
-module.exports = (app) => {
-  const api = app.api.estados;
-
-  app.get('/estado/:uf', api.mostraCidadeEstado);
-};
+module.exports = (app) => app.get('/estado/:uf', app.api.estados.mostraCidadeEstado)
