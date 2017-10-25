@@ -1,4 +1,8 @@
-/*jshint esversion: 6 */
 module.exports = (app) => {
-  app.get('/estado/:uf', app.api.estados.mostraCidadeEstado);
+
+  app.route('/estado')
+  .get(app.api.estados.renderEstadosDocumentacao);
+
+  app.route('/estado/:uf')
+  .get(app.api.estados.mostraCidadeEstado);
 };

@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */  
 const api = {};
 
 const ac = require('./estados/acre.js');
@@ -28,7 +27,7 @@ const se = require('./estados/sergipe.js');
 const sp = require('./estados/saopaulo.js');
 const to = require('./estados/tocantins.js');
 
-api.mostraCidadeEstado = function(req,res){
+api.mostraCidadeEstado = (req,res) => {
   "use strict"; 
   console.log(req.params.uf);
 
@@ -200,5 +199,9 @@ api.mostraCidadeEstado = function(req,res){
     res.send('Não é um estado válido').status(400);
   }
 };
+
+api.renderEstadosDocumentacao = (req,res) => {
+  res.render('estados_endpoint');
+}
 
 module.exports = api;

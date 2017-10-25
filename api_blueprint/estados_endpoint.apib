@@ -1,0 +1,29 @@
+FORMAT: 1A
+
+# WebService Estados
+
+This is an API made to help those who has an application and need to get information about Brazil's states
+
+# Group Estados
+
+## Estados Collection
+
+### Get a Single State [GET /estado/{estado}]
++ Parameter
+    + estado: `sp`
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "cidades": [
+                "Adamantina",
+                "Adolfo",
+                "Aguaí",
+                "Águas da Prata",
+                "Águas de Lindóia",
+                "Águas de Santa Bárbara",
+                "..."
+                ]
+            }
