@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const api = {};
 
 const ac = require('./estados/acre.js');
@@ -80,6 +81,8 @@ const states = {
   to: to
 }
 
+let cities = {};
+
 api.getStateCitiesRoute = (req,res) => {
   let state = api.getCities({state: req.params.uf});
   state ? res.json(state) : res.json({error: 'Not a valid state'}).status(400);
@@ -94,6 +97,31 @@ api.getCities = ({
 }) => {
   return states[state];
 }
+
+api.getCityFromState = ({
+  city = requiredParam('city'),
+  returnEntireJson = false,
+}) => {
+  const state = _.find(states, (element) => element.cities.indexOf(city) >= 0);
+  if (!state)
+    return returnEntireJson ? {} : '';
+  return returnEntireJson ? state : state.state;
+  
+}
+
+// api.getStateFromCity({
+//   city = requiredParam('city')
+// }) => {
+//   _.map(states, (element, index) => {
+
+//   })
+// }
+
+// getCityState = (city, state) => {
+//   return new Promise((resolve, reject) => {
+    
+//   })
+// }
 
 
 const requiredParam = (param) => {
