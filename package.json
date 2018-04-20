@@ -1,10 +1,21 @@
 {
-  "name": "wsestados",
+  "name": "brazilian_states",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Davi de Carvalho",
+    "email": "davi_carvalho96@hotmail.com",
+    "url": "https://github.com/DavideCarvalho"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DavideCarvalho/brazilian_states"
+  },
+  "bugs": {
+    "url": "https://github.com/DavideCarvalho/brazilian_states/issues"
+  },
+  "license": "MIT",
   "scripts": {
     "start": "node app.js",
     "start:hotreload": "./node_modules/.bin/nodemon app.js",
