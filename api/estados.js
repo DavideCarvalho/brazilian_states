@@ -89,12 +89,6 @@ api.renderStatesDocumentation = (req,res) => {
   res.render('estados_endpoint');
 }
 
-// api.getCities({
-//   state = requiredParam('state')
-// } = {}) {
-//   return states[state]
-// }
-
 api.getCities = ({
   state = requiredParam('state'),
 }) => {
