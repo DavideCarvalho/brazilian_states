@@ -5,13 +5,17 @@
   "main": "app.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "start": "node app.js",
+    "start:hotreload": "./node_modules/.bin/nodemon"
+  },
   "dependencies": {
     "body-parser": "^1.18.2",
     "consign": "^0.1.6",
     "ejs": "^2.5.7",
     "express": "^4.16.2"
   },
-  "scripts": {
-    "start": "node app.js"
+  "devDependencies": {
+    "nodemon": "^1.17.3"
   }
 }

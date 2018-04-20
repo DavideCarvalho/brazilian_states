@@ -1,11 +1,12 @@
-# wsestados
-Api simples implementada em nodejs que recebe um estado (Sigla ou nome) e devolve as cidades
+# Brazilian States
+> Simple api that takes an state name and returns it cities
 
-# como usar
-baixe a api ou use-a online com o deploy no heroku
-Mande uma requisição para a url que ela está, caso seja no heroku, mande para https://wsestados.herokuapp.com/estado/:estado
+# How to use it
+- Git clone it
+- run ``npm run start``
+  - or ``npm run start:hotreload`` to hotreload the server if you change one file
 
-O :estado deverá ser a sigla do estado ou o nome do estado por extenso em minúsculo e sem espaços, exemplos:
-https://wsestados.herokuapp.com/estado/saopaulo
-ou
-https://wsestados.herokuapp.com/estado/sp
+It will expose a route on /state/:state, where :state can be the fullname state or the abbreviation of it, e.g:
+``http://localhost:3000/state/sp``  
+or
+``http://localhost:3000/state/saopaulo``

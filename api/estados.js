@@ -27,177 +27,62 @@ const se = require('./estados/sergipe.js');
 const sp = require('./estados/saopaulo.js');
 const to = require('./estados/tocantins.js');
 
-api.mostraCidadeEstado = (req,res) => {
-  "use strict"; 
-  console.log(req.params.uf);
+const states = {
+  acre: ac,
+  ac: ac,
+  alagoas: al,
+  al: al,
+  amazonas: am,
+  am: am,
+  amapa: ap,
+  ap: ap,
+  bahia: ba,
+  ba: ba,
+  ceara: ce,
+  ce: ce,
+  distritofederal: df,
+  df: df,
+  espiritosanto: es,
+  es: es,
+  goiania: go,
+  go: go,
+  maranhao: ma,
+  ma: ma,
+  minasgerais: mg,
+  mg: mg,
+  matogrosso: mt,
+  mt: mt,
+  para: pa,
+  pa: pa,
+  paraiba: pb,
+  pb: pb,
+  piaui: pi,
+  pi: pi,
+  parana: pr,
+  pr: pr,
+  riodejaneiro: rj,
+  rj: rj,
+  riograndedonorte: rn,
+  rn: rn,
+  rondonia: ro,
+  ro: ro,
+  roraima: rr,
+  rr: rr,
+  riograndedosul: rs,
+  rs: rs,
+  santacatarina: sc,
+  sc: sc,
+  sergipe: se,
+  se: se,
+  saopaulo: sp,
+  sp: sp,
+  tocantins: to,
+  to: to
+}
 
-  let estado = req.params.uf;
-  switch(estado){
-    case 'acre':
-    res.json(ac);
-    break;
-    case 'ac':
-    res.json(ac);
-    break;
-    case 'alagoas':
-    res.json(al);
-    break;
-    case 'al':
-    res.json(al);
-    break;
-    case 'amazonas':
-    res.json(am);
-    break;
-    case 'am':
-    res.json(am);
-    break;
-    case 'amapa':
-    res.json(ap);
-    break;
-    case 'ap':
-    res.json(ap);
-    break;
-    case 'bahia':
-    res.json(ba);
-    break;
-    case 'ba':
-    res.json(ba);
-    break;
-    case 'ceara':
-    res.json(ce);
-    break;
-    case 'ce':
-    res.json(ce);
-    break;
-    case 'distritofederal':
-    res.json(df);
-    break;
-    case 'df':
-    res.json(df);
-    break;
-    case 'espiritosanto':
-    res.json(es);
-    break;
-    case 'es':
-    res.json(es);
-    break;
-    case 'goiania':
-    res.json(go);
-    break;
-    case 'go':
-    res.json(go);
-    break;
-    case 'maranhao':
-    res.json(ma);
-    break;
-    case 'ma':
-    res.json(ma);
-    break;
-    case 'minasgerais':
-    res.json(mg);
-    break;
-    case 'mg':
-    res.json(mg);
-    break;
-    case 'matogrossodosul':
-    res.json(ms);
-    break;
-    case 'ms':
-    res.json(ms);
-    break;
-    case 'matogrosso':
-    res.json(mt);
-    break;
-    case 'mt':
-    res.json(mt);
-    break;
-    case 'para':
-    res.json(pa);
-    break;
-    case 'pa':
-    res.json(pa);
-    break;
-    case 'paraiba':
-    res.json(pb);
-    break;
-    case 'pb':
-    res.json(pb);
-    break;
-    case 'pernambuco':
-    res.json(pe);
-    break;
-    case 'pe':
-    res.json(pe);
-    break;
-    case 'piaui':
-    res.json(pi);
-    break;
-    case 'pi':
-    res.json(pi);
-    break;
-    case 'parana':
-    res.json(pr);
-    break;
-    case 'pr':
-    res.json(pr);
-    break;
-    case 'riodejaneiro':
-    res.json(rj);
-    break;
-    case 'rj':
-    res.json(rj);
-    break;
-    case 'riograndedonorte':
-    res.json(rn);
-    break;
-    case 'rn':
-    res.json(rn);
-    break;
-    case 'rondonia':
-    res.json(ro);
-    break;
-    case 'ro':
-    res.json(ro);
-    break;
-    case 'roraima':
-    res.json(rr);
-    break;
-    case 'rr':
-    res.json(rr);
-    break;
-    case 'riograndedosul':
-    res.json(rs);
-    break;
-    case 'rs':
-    res.json(rs);
-    break;
-    case 'santacatarina':
-    res.json(sc);
-    break;
-    case 'sc':
-    res.json(sc);
-    break;
-    case 'sergipe':
-    res.json(se);
-    break;
-    case 'se':
-    res.json(se);
-    break;
-    case 'saopaulo':
-    res.json(sp);
-    break;
-    case 'sp':
-    res.json(sp);
-    break;
-    case 'tocantins':
-    res.json(to);
-    break;
-    case 'to':
-    res.json(to);
-    break;
-    default:
-    res.send('Não é um estado válido').status(400);
-  }
+api.mostraCidadeEstado = (req,res) => {
+  let estado = states[req.params.uf];
+  estado ? res.json(estado) : res.json({error: 'Not a valid state'}).status(400);
 };
 
 api.renderEstadosDocumentacao = (req,res) => {
