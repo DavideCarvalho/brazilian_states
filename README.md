@@ -8,5 +8,5 @@
 
 It will expose a route on /state/:state, where :state can be the fullname state or the abbreviation of it, e.g:
 ``http://localhost:3000/state/sp``  
-or
+or  
 ``http://localhost:3000/state/saopaulo``
