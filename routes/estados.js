@@ -1,8 +1,8 @@
 module.exports = (app) => {
 
-  app.route('/estado')
-  .get(app.api.estados.renderEstadosDocumentacao);
+  app.route('/state')
+  .get(app.api.estados.renderStatesDocumentation);
 
-  app.route('/estado/:uf')
-  .get(app.api.estados.mostraCidadeEstado);
+  app.route('/state/:uf')
+  .get(app.api.estados.getStateCitiesRoute);
 };

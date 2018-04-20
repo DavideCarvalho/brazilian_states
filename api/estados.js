@@ -80,13 +80,40 @@ const states = {
   to: to
 }
 
-api.mostraCidadeEstado = (req,res) => {
-  let estado = states[req.params.uf];
-  estado ? res.json(estado) : res.json({error: 'Not a valid state'}).status(400);
+api.getStateCitiesRoute = (req,res) => {
+  let state = api.getCities({state: req.params.uf});
+  state ? res.json(state) : res.json({error: 'Not a valid state'}).status(400);
 };
 
-api.renderEstadosDocumentacao = (req,res) => {
+api.renderStatesDocumentation = (req,res) => {
   res.render('estados_endpoint');
+}
+
+// api.getCities({
+//   state = requiredParam('state')
+// } = {}) {
+//   return states[state]
+// }
+
+api.getCities = ({
+  state = requiredParam('state'),
+}) => {
+  return states[state];
+}
+
+
+const requiredParam = (param) => {
+  const requiredParamError = new Error(
+   `Required parameter, "${param}" is missing.`
+  );
+  // preserve original stack trace
+  if (typeof Error.captureStackTrace === 'function') {
+    Error.captureStackTrace(
+      requiredParamError, 
+      requiredParam
+    )
+  };
+  throw requiredParamError;
 }
 
 module.exports = api;
