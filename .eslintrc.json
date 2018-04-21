@@ -5,5 +5,8 @@
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true
     }
+  },
+  "env": {
+    "mocha": true
   }
 }
