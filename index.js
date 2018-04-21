@@ -1,8 +1,3 @@
-api = require('./api/estados');
-
-const npmPackage = {
-  getCitiesFromState: api.getCities
-  getStateFromCity: api.getStateFromCity
-}
+const npmPackage = require('./build');
 
 module.exports = npmPackage;

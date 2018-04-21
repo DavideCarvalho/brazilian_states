@@ -1,5 +1,5 @@
-const api = require('../api/estados');
-const spCities = require('../api/estados/saopaulo');
+const api = require('../src/api/estados');
+const spCities = require('../src/api/estados/saopaulo');
 const _ = require('lodash');
 const { expect } = require('chai');
 
