@@ -1,36 +1,35 @@
-// @flow
 const _ = require('lodash');
 
 const api = {};
 
-const ac: stateType = require('./estados/acre.js');
-const al: stateType = require('./estados/alagoas.js');
-const am: stateType = require('./estados/amazonas.js');
-const ap: stateType = require('./estados/amapa.js');
-const ba: stateType = require('./estados/bahia.js');
-const ce: stateType = require('./estados/ceara.js');
-const df: stateType = require('./estados/df.js');
-const es: stateType = require('./estados/espiritosanto.js');
-const go: stateType = require('./estados/goiania.js');
-const ma: stateType = require('./estados/maranhao.js');
-const mg: stateType = require('./estados/minasgerais.js');
-const ms: stateType = require('./estados/matogrossodosul.js');
-const mt: stateType = require('./estados/matogrosso.js');
-const pa: stateType = require('./estados/para.js');
-const pb: stateType = require('./estados/paraiba.js');
-const pi: stateType = require('./estados/piaui.js');
-const pr: stateType = require('./estados/parana.js');
-const rj: stateType = require('./estados/riodejaneiro.js');
-const rn: stateType = require('./estados/riograndedonorte.js');
-const ro: stateType = require('./estados/rondonia.js');
-const rr: stateType = require('./estados/roraima.js');
-const rs: stateType = require('./estados/riograndedosul.js');
-const sc: stateType = require('./estados/santacatarina.js');
-const se: stateType = require('./estados/sergipe.js');
-const sp: stateType = require('./estados/saopaulo.js');
-const to: stateType = require('./estados/tocantins.js');
+const ac = require('./estados/acre.js');
+const al = require('./estados/alagoas.js');
+const am = require('./estados/amazonas.js');
+const ap = require('./estados/amapa.js');
+const ba = require('./estados/bahia.js');
+const ce = require('./estados/ceara.js');
+const df = require('./estados/df.js');
+const es = require('./estados/espiritosanto.js');
+const go = require('./estados/goiania.js');
+const ma = require('./estados/maranhao.js');
+const mg = require('./estados/minasgerais.js');
+const ms = require('./estados/matogrossodosul.js');
+const mt = require('./estados/matogrosso.js');
+const pa = require('./estados/para.js');
+const pb = require('./estados/paraiba.js');
+const pi = require('./estados/piaui.js');
+const pr = require('./estados/parana.js');
+const rj = require('./estados/riodejaneiro.js');
+const rn = require('./estados/riograndedonorte.js');
+const ro = require('./estados/rondonia.js');
+const rr = require('./estados/roraima.js');
+const rs = require('./estados/riograndedosul.js');
+const sc = require('./estados/santacatarina.js');
+const se = require('./estados/sergipe.js');
+const sp = require('./estados/saopaulo.js');
+const to = require('./estados/tocantins.js');
 
-const states: stateType[] = [
+const states = [
   ac,
   al,
   am,
@@ -59,8 +58,8 @@ const states: stateType[] = [
   to,
 ];
 
-const requiredParam = (param: string) => {
-  const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
+const requiredParam = (param) => {
+  const requiredParamError = new Error(`Required parameter, "${param}" is missing.`);
   // preserve original stack trace
   if (typeof Error.captureStackTrace === 'function') {
     Error.captureStackTrace(
@@ -71,7 +70,7 @@ const requiredParam = (param: string) => {
   throw requiredParamError;
 };
 
-api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
+api.getStateCitiesRoute = (req, res) => {
   const state = api.getCities({ state: req.params.uf });
   if (state) { 
     res.json(state);
@@ -80,7 +79,7 @@ api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
   }
 };
 
-api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
+api.getCityStatesRoute = (req, res) => {
   const returnEntireJson = !!req.query.returnEntireJson;
   const state = api.getCityFromState({ city: req.params.cityName, returnEntireJson });
   if (state) {
@@ -90,19 +89,19 @@ api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
   }
 };
 
-api.renderStatesDocumentation = (req: express$Request, res: express$Response) => {
+api.renderStatesDocumentation = (req, res) => {
   res.render('estados_endpoint');
 };
 
 api.getCities = ({
   state = requiredParam('state'),
-}: { state: string }): void | stateType => _.find(states, (element: stateType): boolean => element.state === state || element.abbreviation === state);
+}) => _.find(states, element => element.state === state || element.abbreviation === state);
 
 api.getCityFromState = ({
   city = requiredParam('city'),
   returnEntireJson = false,
-}: {city: string, returnEntireJson: boolean}): stateType | string | {} => {
-  const state: void | stateType = _.find(states, (element: stateType) => element.cities.indexOf(city) >= 0);
+}) => {
+  const state = _.find(states, element => element.cities.indexOf(city) >= 0);
   if (!state) {
     // { return returnEntireJson ? {} : ''; }
     let returnValue;

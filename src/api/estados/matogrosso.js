@@ -1,5 +1,5 @@
 // @flow
-const mt: stateType = {
+const mt = {
   state: 'Mato Grosso',
   abbreviation: 'mt',
   cities: [
