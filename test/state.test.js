@@ -5,7 +5,7 @@ const { expect } = require('chai');
 
 describe('state', () => {
   it('should return the given state from fullname', () => {
-    const cities = api.getCities({ state: 'saopaulo' });
+    const cities = api.getCities({ state: 'São Paulo' });
     expect(cities).to.equal(spCities);
   });
   it('should return undefined if fullname state not found', () => {

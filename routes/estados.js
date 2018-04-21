@@ -5,4 +5,7 @@ module.exports = (app) => {
 
   app.route('/state/:uf')
   .get(app.api.estados.getStateCitiesRoute);
+
+  app.route('/city/:cityName')
+  .get(app.api.estados.getCityStatesRoute)
 };

@@ -28,64 +28,43 @@ const se = require('./estados/sergipe.js');
 const sp = require('./estados/saopaulo.js');
 const to = require('./estados/tocantins.js');
 
-const states = {
-  acre: ac,
-  ac: ac,
-  alagoas: al,
-  al: al,
-  amazonas: am,
-  am: am,
-  amapa: ap,
-  ap: ap,
-  bahia: ba,
-  ba: ba,
-  ceara: ce,
-  ce: ce,
-  distritofederal: df,
-  df: df,
-  espiritosanto: es,
-  es: es,
-  goiania: go,
-  go: go,
-  maranhao: ma,
-  ma: ma,
-  minasgerais: mg,
-  mg: mg,
-  matogrosso: mt,
-  mt: mt,
-  para: pa,
-  pa: pa,
-  paraiba: pb,
-  pb: pb,
-  piaui: pi,
-  pi: pi,
-  parana: pr,
-  pr: pr,
-  riodejaneiro: rj,
-  rj: rj,
-  riograndedonorte: rn,
-  rn: rn,
-  rondonia: ro,
-  ro: ro,
-  roraima: rr,
-  rr: rr,
-  riograndedosul: rs,
-  rs: rs,
-  santacatarina: sc,
-  sc: sc,
-  sergipe: se,
-  se: se,
-  saopaulo: sp,
-  sp: sp,
-  tocantins: to,
-  to: to
-}
-
-let cities = {};
+const states = [
+  ac,
+  al,
+  am,
+  ap,
+  ba,
+  ce,
+  df,
+  es,
+  go,
+  ma,
+  mg,
+  mt,
+  pa,
+  pb,
+  pi,
+  pr,
+  rj,
+  rn,
+  ro,
+  rr,
+  rs,
+  sc,
+  se,
+  sp,
+  to
+]
 
 api.getStateCitiesRoute = (req,res) => {
   let state = api.getCities({state: req.params.uf});
   state ? res.json(state) : res.json({error: 'Not a valid state'}).status(400);
+};
+
+api.getCityStatesRoute = (req,res) => {
+  const returnEntireJson = req.query.returnEntireJson ? true : false;
+  let state = api.getCityFromState({ city: req.params.cityName, returnEntireJson });
+  state ? res.json(state) : res.json({error: 'Not a valid city name'}).status(400);
 };
 
 api.renderStatesDocumentation = (req,res) => {
@@ -95,7 +74,7 @@ api.renderStatesDocumentation = (req,res) => {
 api.getCities = ({
   state = requiredParam('state'),
 }) => {
-  return states[state];
+  return _.find(states, (element) => element.state === state || element.abbreviation === state);
 }
 
 api.getCityFromState = ({
@@ -108,21 +87,6 @@ api.getCityFromState = ({
   return returnEntireJson ? state : state.state;
   
 }
-
-// api.getStateFromCity({
-//   city = requiredParam('city')
-// }) => {
-//   _.map(states, (element, index) => {
-
-//   })
-// }
-
-// getCityState = (city, state) => {
-//   return new Promise((resolve, reject) => {
-    
-//   })
-// }
-
 
 const requiredParam = (param) => {
   const requiredParamError = new Error(

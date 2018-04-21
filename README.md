@@ -29,8 +29,8 @@ This method take one parameter (this parameter is required, otherwise it will th
 const { getCitiesFromState } = require('br_states')
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
-const saoPauloCitiesFullname = getCitiesFromState({state: 'saopaulo'});
-const saoPauloCitiesAbbreviation = getCitiesFromState({state: 'sp'});
+const saoPauloCitiesFullname = getCitiesFromState({ state: 'São Paulo' });
+const saoPauloCitiesAbbreviation = getCitiesFromState({ state: 'sp' });
 // those two return the same thing
 ```
 
