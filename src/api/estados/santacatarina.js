@@ -1,5 +1,5 @@
 // @flow
-const sc = {
+const sc: stateType = {
   state: 'Santa Catarina',
   abbreviation: 'sc',
   cities: [

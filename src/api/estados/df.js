@@ -1,5 +1,5 @@
 // @flow
-const df = {
+const df: stateType = {
   state: 'Distrito Federal',
   abbreviation: 'df',
   cities: ['Brasília'],

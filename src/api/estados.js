@@ -1,3 +1,4 @@
+// @flow
 const _ = require('lodash');
 
 const api = {};
@@ -29,7 +30,7 @@ const se = require('./estados/sergipe.js');
 const sp = require('./estados/saopaulo.js');
 const to = require('./estados/tocantins.js');
 
-const states = [
+const states: Array<stateType> = [
   ac,
   al,
   am,
@@ -59,7 +60,7 @@ const states = [
 ];
 
 const requiredParam = (param) => {
-  const requiredParamError = new Error(`Required parameter, "${param}" is missing.`);
+  const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
   // preserve original stack trace
   if (typeof Error.captureStackTrace === 'function') {
     Error.captureStackTrace(
@@ -70,17 +71,17 @@ const requiredParam = (param) => {
   throw requiredParamError;
 };
 
-api.getStateCitiesRoute = (req, res) => {
+api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
   const state = api.getStateCities({ state: req.params.uf });
-  if (state) { 
+  if (state) {
     res.json(state);
-  } else { 
+  } else {
     res.json({ error: 'Not a valid state' }).status(400);
   }
 };
 
-api.getCityStatesRoute = (req, res) => {
-  const returnEntireJson = !!req.query.returnEntireJson;
+api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
+  const { query: { returnEntireJson } }: boolean = req;
   const state = api.getCityState({ city: req.params.cityName, returnEntireJson });
   if (state) {
     res.json(state);
@@ -89,19 +90,14 @@ api.getCityStatesRoute = (req, res) => {
   }
 };
 
-api.renderStatesDocumentation = (req, res) => {
+api.renderStatesDocumentation = (req: express$Request, res: express$Response) => {
   res.render('estados_endpoint');
 };
 
-api.getStateCities = ({
-  state = requiredParam('state'),
-}) => _.find(states, element => element.state === state || element.abbreviation === state);
+api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => _.find(states, element => element.state === state || element.abbreviation === state);
 
-api.getCityState = ({
-  city = requiredParam('city'),
-  returnEntireJson = false,
-}) => {
-  const state = _.find(states, element => element.cities.indexOf(city) >= 0);
+api.getCityState = ({ city = requiredParam('city'), returnEntireJson = false }: { city: string, returnEntireJson: boolean }): string | stateType | {} => {
+  const state: void | stateType = _.find(states, (element: stateType) => element.cities.indexOf(city) >= 0);
   if (!state) {
     // { return returnEntireJson ? {} : ''; }
     let returnValue;

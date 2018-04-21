@@ -1,5 +1,4 @@
 const api = require('../index');
-console.log(api);
 const spCities = require('../src/api/estados/saopaulo');
 const _ = require('lodash');
 const { expect } = require('chai');
@@ -7,7 +6,7 @@ const { expect } = require('chai');
 describe('state', () => {
   it('should return the given state from fullname', () => {
     const cities = api.getStateCities({ state: 'São Paulo' });
-    expect(cities).to.equal(spCities);
+    expect(cities).to.deep.equal(spCities);
   });
   it('should return undefined if fullname state not found', () => {
     const cities = api.getStateCities({ state: 'someRandomState' });
@@ -15,7 +14,7 @@ describe('state', () => {
   });
   it('should return the given state from abbreviation', () => {
     const cities = api.getStateCities({ state: 'sp' });
-    expect(cities).to.equal(spCities);
+    expect(cities).to.deep.equal(spCities);
   });
   it('should return undefined if abbreviation state not found', () => {
     const cities = api.getStateCities({ state: 'someRandomState' });
@@ -28,9 +27,7 @@ describe('state', () => {
     expect(() => api.getStateCities({ random: 'parameter' })).to.throw();
   });
   it('should return json object of the state that has the given city if returnEntireJson is set to true', () => {
-    expect(
-      api.getCityState({ city: 'Santos', returnEntireJson: true }),
-    ).to.be.equal(spCities);
+    expect(api.getCityState({ city: 'Santos', returnEntireJson: true })).to.deep.equal(spCities);
   });
   it('should return only the name of the state if returnEntireJson is not set', () => {
     expect(api.getCityState({ city: 'Santos' })).to.be.equal('São Paulo');

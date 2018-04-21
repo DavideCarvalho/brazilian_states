@@ -1,4 +1,4 @@
-const api = require('./src/api/estados');
+const api = require('./lib/api/estados');
 
 const npmPackage = {
   getStateCities: api.getStateCities,

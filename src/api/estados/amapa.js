@@ -1,5 +1,5 @@
 // @flow
-const ap = {
+const ap: stateType = {
   state: 'Amapa',
   abbreviation: 'ap',
   cities: [
