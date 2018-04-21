@@ -1,5 +1,5 @@
 # Br States
-> Simple api that takes an state name and returns it cities
+> Simple api to help on operations with cities and states without the need of an http request to a remote service
 
 # Npm Package
 ## How to use
