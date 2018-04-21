@@ -1,5 +1,6 @@
 // @flow
 const _ = require('lodash');
+
 const api = {};
 
 const ac: stateType = require('./estados/acre.js');
@@ -41,6 +42,7 @@ const states: stateType[] = [
   go,
   ma,
   mg,
+  ms,
   mt,
   pa,
   pb,
@@ -54,51 +56,64 @@ const states: stateType[] = [
   sc,
   se,
   sp,
-  to
-]
+  to,
+];
 
-api.getStateCitiesRoute = (req: express$Request,res: express$Response) => {
-  let state = api.getCities({state: req.params.uf});
-  state ? res.json(state) : res.json({error: 'Not a valid state'}).status(400);
+const requiredParam = (param: string) => {
+  const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
+  // preserve original stack trace
+  if (typeof Error.captureStackTrace === 'function') {
+    Error.captureStackTrace(
+      requiredParamError,
+      requiredParam,
+    );
+  }
+  throw requiredParamError;
+};
+
+api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
+  const state = api.getCities({ state: req.params.uf });
+  if (state) { 
+    res.json(state);
+  } else { 
+    res.json({ error: 'Not a valid state' }).status(400);
+  }
 };
 
 api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
-  const returnEntireJson = req.query.returnEntireJson ? true : false;
-  let state = api.getCityFromState({ city: req.params.cityName, returnEntireJson });
-  state ? res.json(state) : res.json({error: 'Not a valid city name'}).status(400);
+  const returnEntireJson = !!req.query.returnEntireJson;
+  const state = api.getCityFromState({ city: req.params.cityName, returnEntireJson });
+  if (state) {
+    res.json(state);
+  } else {
+    res.json({ error: 'Not a valid city name' }).status(400);
+  }
 };
 
-api.renderStatesDocumentation = (req: express$Request,res: express$Response) => {
+api.renderStatesDocumentation = (req: express$Request, res: express$Response) => {
   res.render('estados_endpoint');
-}
+};
 
 api.getCities = ({
   state = requiredParam('state'),
-} : { state: string }): void | stateType => _.find(states, (element: stateType): boolean => element.state === state || element.abbreviation === state);
+}: { state: string }): void | stateType => _.find(states, (element: stateType): boolean => element.state === state || element.abbreviation === state);
 
 api.getCityFromState = ({
   city = requiredParam('city'),
   returnEntireJson = false,
-} : {city: string, returnEntireJson: boolean}): stateType | string | {} => {
+}: {city: string, returnEntireJson: boolean}): stateType | string | {} => {
   const state: void | stateType = _.find(states, (element: stateType) => element.cities.indexOf(city) >= 0);
-  if (!state)
-    return returnEntireJson ? {} : '';
+  if (!state) {
+    // { return returnEntireJson ? {} : ''; }
+    let returnValue;
+    if (returnEntireJson) {
+      returnValue = {};
+    } else {
+      returnValue = '';
+    }
+    return returnValue;
+  }
   return returnEntireJson ? state : state.state;
-  
-}
-
-const requiredParam = (param: string) => {
-  const requiredParamError: Error = new Error(
-   `Required parameter, "${param}" is missing.`
-  );
-  // preserve original stack trace
-  if (typeof Error.captureStackTrace === 'function') {
-    Error.captureStackTrace(
-      requiredParamError, 
-      requiredParam
-    )
-  };
-  throw requiredParamError;
-}
+};
 
 module.exports = api;
