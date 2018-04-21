@@ -71,7 +71,7 @@ const requiredParam = (param) => {
 };
 
 api.getStateCitiesRoute = (req, res) => {
-  const state = api.getCities({ state: req.params.uf });
+  const state = api.getStateCities({ state: req.params.uf });
   if (state) { 
     res.json(state);
   } else { 
@@ -81,7 +81,7 @@ api.getStateCitiesRoute = (req, res) => {
 
 api.getCityStatesRoute = (req, res) => {
   const returnEntireJson = !!req.query.returnEntireJson;
-  const state = api.getCityFromState({ city: req.params.cityName, returnEntireJson });
+  const state = api.getCityState({ city: req.params.cityName, returnEntireJson });
   if (state) {
     res.json(state);
   } else {
@@ -93,11 +93,11 @@ api.renderStatesDocumentation = (req, res) => {
   res.render('estados_endpoint');
 };
 
-api.getCities = ({
+api.getStateCities = ({
   state = requiredParam('state'),
 }) => _.find(states, element => element.state === state || element.abbreviation === state);
 
-api.getCityFromState = ({
+api.getCityState = ({
   city = requiredParam('city'),
   returnEntireJson = false,
 }) => {

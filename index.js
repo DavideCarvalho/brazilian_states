@@ -1,8 +1,8 @@
 const api = require('./src/api/estados');
 
 const npmPackage = {
-  getCitiesFromState: api.getCities,
-  getStateFromCity: api.getStateFromCity,
+  getStateCities: api.getStateCities,
+  getCityState: api.getCityState,
 };
 
 module.exports = npmPackage;

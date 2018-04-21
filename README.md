@@ -21,30 +21,30 @@ import brStates from 'br_states'
 
 ## Methods
 
-### ``getCitiesFromState({state: string!}): {cities: state: string, abbreviation: string, cities:[string]}``
+### ``getStateCities({state: string!}): {cities: state: string, abbreviation: string, cities:[string]}``
 
 This method take one parameter (this parameter is required, otherwise it will throw an error) with the state name or abbreviation and returns its cities;
 
 ```javascript
-const { getCitiesFromState } = require('br_states')
+const { getStateCities } = require('br_states')
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
-const saoPauloCitiesFullname = getCitiesFromState({ state: 'São Paulo' });
-const saoPauloCitiesAbbreviation = getCitiesFromState({ state: 'sp' });
+const saoPauloCitiesFullname = getStateCities({ state: 'São Paulo' });
+const saoPauloCitiesAbbreviation = getStateCities({ state: 'sp' });
 // those two return the same thing
 ```
 
-### ``getStateFromCity({city: string!, returnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}``
+### ``getCityState({city: string!, returnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}``
 
 If you have the name of the city and want to get the name of its state, this method is for you.
 Just put the name on city parameter and it will return you the entire json object or only the state name (based on returnEntireJson value, if returnEntireJson is not set, the default value is false).
 
 ```javascript
-const { getStateFromCity } = require('br_states')
+const { getCityState } = require('br_states')
 // or with ES6 import { getStateFromCity } from 'br_states'
 
-const santosStateName = getCitiesFromState({city: 'Santos'}); // São Paulo
-const santosStateObject = getCitiesFromState({city: 'Santos', returnEntireJson: true}); // it will return the entire state object
+const santosStateName = getCityState({city: 'Santos'}); // São Paulo
+const santosStateObject = getCityState({city: 'Santos', returnEntireJson: true}); // it will return the entire state object
 ```
 
 # WebService
