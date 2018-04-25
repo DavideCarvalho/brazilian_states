@@ -59,6 +59,8 @@ const states: Array<stateType> = [
   to,
 ];
 
+const memoizedStates = {};
+
 const requiredParam = (param) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
   // preserve original stack trace
@@ -81,8 +83,10 @@ api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
 };
 
 api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
-  const { query: { returnEntireJson } }: boolean = req;
-  const state = api.getCityState({ city: req.params.cityName, returnEntireJson });
+  const { query: { returnEntireJson } }: { query: { returnEntireJson: string | Array<string> } } = req;
+  const { params: { cityName } }: { params: { cityName: string } } = req;
+  const shouldReturnEntireJson: boolean = returnEntireJson === 'true' ? true : false;
+  const state = api.getCityState({ city: cityName, shouldReturnEntireJson });
   if (state) {
     res.json(state);
   } else {
@@ -94,21 +98,26 @@ api.renderStatesDocumentation = (req: express$Request, res: express$Response) =>
   res.render('estados_endpoint');
 };
 
-api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => _.find(states, element => element.state === state || element.abbreviation === state);
-
-api.getCityState = ({ city = requiredParam('city'), returnEntireJson = false }: { city: string, returnEntireJson: boolean }): string | stateType | {} => {
-  const state: void | stateType = _.find(states, (element: stateType) => element.cities.indexOf(city) >= 0);
-  if (!state) {
-    // { return returnEntireJson ? {} : ''; }
-    let returnValue;
-    if (returnEntireJson) {
-      returnValue = {};
-    } else {
-      returnValue = '';
-    }
-    return returnValue;
+api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => {
+  const findState = element => element.state === state || element.abbreviation === state;
+  const memoizedState = memoizedStates[state];
+  if (memoizedState) {
+    return memoizedState;
   }
-  return returnEntireJson ? state : state.state;
+  const stateFound: stateType | void = _.find(states, findState);
+  if (stateFound) {
+    memoizedStates[state] = stateFound;
+  }
+  return stateFound;
+};
+
+api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
+  const findCity = (element: stateType) => element.cities.indexOf(city) >= 0;
+  const state: void | stateType = _.find(states, findCity);
+  if (!state) {
+    return shouldReturnEntireJson ? {} : '';
+  }
+  return shouldReturnEntireJson ? state : state.state;
 };
 
 module.exports = api;
