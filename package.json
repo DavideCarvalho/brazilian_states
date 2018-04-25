@@ -21,8 +21,7 @@
     "start:hotreload": "./node_modules/.bin/nodemon app.js",
     "pretest": "node_modules/.bin/babel src/ -d lib/",
     "test": "node_modules/.bin/mocha",
-    "build": "node_modules/.bin/parcel build ./src/index.js -d ./",
-    "build:flow": "node_modules/.bin/babel src/ -d lib/",
+    "build": "node_modules/.bin/babel src/ -d lib/",
     "lint": "node_modules/.bin/eslint"
   },
   "dependencies": {
@@ -40,13 +39,13 @@
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-prettier": "^2.6.0",
     "flow-bin": "^0.70.0",
     "flow-remove-types": "^1.2.3",
     "mocha": "^5.1.1",
-    "nodemon": "^1.17.3",
-    "parcel-bundler": "^1.7.1",
-    "performance-now": "^2.1.0"
+    "nodemon": "^1.17.3"
   }
 }
