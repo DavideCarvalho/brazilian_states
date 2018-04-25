@@ -29,9 +29,8 @@ describe('state', () => {
     _performance.measure('returning first run', 'starting first run', 'ending first run');
     _performance.measure('returning memoized run', 'starting memoized run', 'ending memoized run');
     const measurements = _performance.getEntriesByType('measure');
-    const times = [];
-    measurements.forEach(measurement => times.push(measurement.duration));
-    expect(times[1]).to.deep.below(times[0]);
+    const times = measurements.map(measurement => measurement.duration);
+    expect(times[1]).to.be.below(times[0]);
   });
   it('should return undefined if abbreviation state not found', () => {
     const cities = api.getStateCities({ state: 'someRandomState' });
