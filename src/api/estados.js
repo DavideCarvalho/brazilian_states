@@ -111,7 +111,7 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => 
   return stateFound;
 };
 
-api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson: boolean }): string | stateType | {} => {
+api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
   const findCity = (element: stateType) => element.cities.indexOf(city) >= 0;
   const state: void | stateType = _.find(states, findCity);
   if (!state) {
