@@ -1,8 +1,5 @@
 {
-  "extends": [
-    "prettier",
-    "prettier/flowtype"
-  ],
+  "extends": ["airbnb-base", "plugin:flowtype/recommended"],
   "plugins": ["flowtype"],
   "settings": {
     "flowtype": {
@@ -10,11 +7,6 @@
     }
   },
   "env": {
-    "mocha": true,
-    "es6": true,
-    "node": true
-  },
-  "rules": {
-    "prettier/prettier": "error"
+    "mocha": true
   }
 }
