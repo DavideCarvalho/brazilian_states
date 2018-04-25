@@ -59,7 +59,7 @@ const states: Array<stateType> = [
   to,
 ];
 
-const memoizedStates = {};
+const memoizedStates: { [stateName: string]: stateType } = {};
 
 const requiredParam = (param) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
@@ -98,9 +98,19 @@ api.renderStatesDocumentation = (req: express$Request, res: express$Response) =>
   res.render('estados_endpoint');
 };
 
-api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => {
+
+/**
+ * This function returns an array with the cities of the given state
+ * @param {Object} stateObject - The object the tells the name of the state.
+ * @param {string} stateObject.state - The state name.
+ *
+ * @example
+ * const cities = api.getStateCities({ state: 'São Paulo' });
+ * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
+ */
+api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?stateType => {
   const findState = element => element.state === state || element.abbreviation === state;
-  const memoizedState = memoizedStates[state];
+  const memoizedState: ?stateType = memoizedStates[state];
   if (memoizedState) {
     return memoizedState;
   }
