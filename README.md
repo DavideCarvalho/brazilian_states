@@ -1,3 +1,8 @@
+<p>
+    <a href="https://www.npmjs.com/package/br_states"><img src="https://img.shields.io/npm/v/br_states.svg?maxAge=3600" alt="NPM version" /></a>
+    <a href="https://www.npmjs.com/package/br_states"><img src="https://img.shields.io/npm/dt/br_states.svg?maxAge=3600" alt="NPM downloads" /></a>
+</p>
+
 # Br States
 > Simple api to help on operations with cities and states without the need of an http request to a remote service
 
