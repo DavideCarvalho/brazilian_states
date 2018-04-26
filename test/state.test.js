@@ -28,9 +28,8 @@ describe('state', () => {
     _performance.mark('ending memoized run');
     _performance.measure('returning first run', 'starting first run', 'ending first run');
     _performance.measure('returning memoized run', 'starting memoized run', 'ending memoized run');
-    const measurements = _performance.getEntriesByType('measure');
-    const times = measurements.map(measurement => measurement.duration);
-    expect(times[1]).to.be.below(times[0]);
+    const [firstCall, memoizedCall] = _performance.getEntriesByType('measure');
+    expect(memoizedCall.duration).to.be.below(firstCall.duration);
   });
   it('should return undefined if abbreviation state not found', () => {
     const cities = api.getStateCities({ state: 'someRandomState' });
@@ -44,6 +43,18 @@ describe('state', () => {
   });
   it('should return json object of the state that has the given city if shouldReturnEntireJson is set to true', () => {
     expect(api.getCityState({ city: 'Santos', shouldReturnEntireJson: true })).to.deep.equal(spCities);
+  });
+  it('second call to getCityState function with the same parameters as the first call should be faster', () => {
+    _performance.mark('starting first run');
+    api.getCityState({ city: 'Santos', shouldReturnEntireJson: true });
+    _performance.mark('ending first run');
+    _performance.mark('starting memoized run');
+    api.getCityState({ city: 'Santos', shouldReturnEntireJson: true });
+    _performance.mark('ending memoized run');
+    _performance.measure('returning first run', 'starting first run', 'ending first run');
+    _performance.measure('returning memoized run', 'starting memoized run', 'ending memoized run');
+    const [firstCall, memoizedCall] = _performance.getEntriesByType('measure');
+    expect(memoizedCall.duration).to.be.below(firstCall.duration);
   });
   it('should return only the name of the state if shouldReturnEntireJson is not set', () => {
     expect(api.getCityState({ city: 'Santos' })).to.be.equal('São Paulo');
