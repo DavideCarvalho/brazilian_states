@@ -6,8 +6,8 @@
  * @property {String} abbreviation - State name abbreviated
  * @property {String[]} cities - Array with state cities
  */
-type stateType = {
+export type stateType = {
   state: string,
   abbreviation: string,
   cities: Array<string>
-}
+};
