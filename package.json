@@ -22,6 +22,7 @@
     "pretest": "node_modules/.bin/babel src/ -d lib/",
     "test": "node_modules/.bin/mocha",
     "build": "node_modules/.bin/babel src/ -d lib/",
+    "generatedoc": "node_modules/.bin/documentation build src/** -f md -o docs.md",
     "lint": "node_modules/.bin/eslint"
   },
   "dependencies": {
@@ -29,13 +30,16 @@
     "consign": "^0.1.6",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
+    "global": "^4.3.2",
     "lodash": "^4.17.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-preset-flow": "^6.23.0",
+    "babel-preset-import-export": "^1.0.2",
     "chai": "^4.1.2",
+    "documentation": "^6.3.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",

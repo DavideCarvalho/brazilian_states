@@ -1,34 +1,36 @@
 // @flow
-const _ = require('lodash');
+import _ from 'lodash';
+import type { stateType } from '../types/stateType';
+import type { memoizedStateType } from '../types/memoizedStateType';
+import type { memoizedCityType } from '../types/memoizedCityType';
+import ac from './estados/acre';
+import al from './estados/alagoas';
+import am from './estados/amazonas';
+import ap from './estados/amapa';
+import ba from './estados/bahia';
+import ce from './estados/ceara';
+import df from './estados/df';
+import es from './estados/espiritosanto';
+import go from './estados/goiania';
+import ma from './estados/maranhao';
+import mg from './estados/minasgerais';
+import ms from './estados/matogrossodosul';
+import mt from './estados/matogrosso';
+import pa from './estados/para';
+import pb from './estados/paraiba';
+import pi from './estados/piaui';
+import pr from './estados/parana';
+import rj from './estados/riodejaneiro';
+import rn from './estados/riograndedonorte';
+import ro from './estados/rondonia';
+import rr from './estados/roraima';
+import rs from './estados/riograndedosul';
+import sc from './estados/santacatarina';
+import se from './estados/sergipe';
+import sp from './estados/saopaulo';
+import to from './estados/tocantins';
 
 const api = {};
-
-const ac = require('./estados/acre.js');
-const al = require('./estados/alagoas.js');
-const am = require('./estados/amazonas.js');
-const ap = require('./estados/amapa.js');
-const ba = require('./estados/bahia.js');
-const ce = require('./estados/ceara.js');
-const df = require('./estados/df.js');
-const es = require('./estados/espiritosanto.js');
-const go = require('./estados/goiania.js');
-const ma = require('./estados/maranhao.js');
-const mg = require('./estados/minasgerais.js');
-const ms = require('./estados/matogrossodosul.js');
-const mt = require('./estados/matogrosso.js');
-const pa = require('./estados/para.js');
-const pb = require('./estados/paraiba.js');
-const pi = require('./estados/piaui.js');
-const pr = require('./estados/parana.js');
-const rj = require('./estados/riodejaneiro.js');
-const rn = require('./estados/riograndedonorte.js');
-const ro = require('./estados/rondonia.js');
-const rr = require('./estados/roraima.js');
-const rs = require('./estados/riograndedosul.js');
-const sc = require('./estados/santacatarina.js');
-const se = require('./estados/sergipe.js');
-const sp = require('./estados/saopaulo.js');
-const to = require('./estados/tocantins.js');
 
 const states: Array<stateType> = [
   ac,
@@ -59,8 +61,8 @@ const states: Array<stateType> = [
   to,
 ];
 
-const memoizedStates = {};
-const memoizedCities = {};
+const memoizedStates: memoizedStateType = {};
+const memoizedCities: memoizedCityType = {};
 
 const requiredParam = (param) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
@@ -99,9 +101,19 @@ api.renderStatesDocumentation = (req: express$Request, res: express$Response) =>
   res.render('estados_endpoint');
 };
 
-api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => {
+
+/**
+ * This function returns an array with the cities of the given state
+ * @param {Object} stateObject - The object the tells the name of the state.
+ * @param {string} stateObject.state - The state name.
+ *
+ * @example
+ * const cities = api.getStateCities({ state: 'São Paulo' });
+ * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
+ */
+api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?stateType => {
   const findState = element => element.state === state || element.abbreviation === state;
-  const memoizedState = memoizedStates[state];
+  const memoizedState: ?stateType = memoizedStates[state];
   if (memoizedState) {
     return memoizedState;
   }
@@ -112,6 +124,36 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => 
   return stateFound;
 };
 
+/**
+ * This function receives the city name and returns the full json stateType object or only the name of the state depending on shouldReturnEntireJson property. If the state is not found, it returns an empty object or an empty string.
+ * @param {Object} cityObject - The object the tells the name of the city and if the return should be an object or just a string.
+ * @param {string} cityObject.city - The city name.
+ * @param {boolean} cityObject.shouldReturnEntireJson - This property tells to the method that the return should ou should not be the full state object. If the property is true, it will return the entire stateType object, if its false or not set, it will return just the string with the name of the state.
+ *
+ * @example
+ * const cities = api.getCityState({ city: 'Santos', shouldReturnEntireJson: true });
+ * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
+ *
+ * @example
+ * const cities = api.getCityState({ city: 'Santos' });
+ * // 'São Paulo'
+ *
+ * @example
+ * const cities = api.getCityState({ city: 'Santos', shouldReturnEntireJson: false });
+ * // 'São Paulo',
+ *
+ * @example
+ * const cities = api.getCityState({ city: 'randomCity' });
+ * // ''
+ *
+ * @example
+ * const cities = api.getCityState({ city: 'randomCity' , shouldReturnEntireJson: false});
+ * // ''
+ *
+ * @example
+ * const cities = api.getCityState({ city: 'randomCity', shouldReturnEntireJson: true });
+ * // {}
+ */
 api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
   const memoizedCity = memoizedCities[city];
   if (memoizedCity) {
