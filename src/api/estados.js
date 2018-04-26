@@ -60,6 +60,7 @@ const states: Array<stateType> = [
 ];
 
 const memoizedStates = {};
+const memoizedCities = {};
 
 const requiredParam = (param) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
@@ -85,7 +86,7 @@ api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
 api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
   const { query: { returnEntireJson } }: { query: { returnEntireJson: string | Array<string> } } = req;
   const { params: { cityName } }: { params: { cityName: string } } = req;
-  const shouldReturnEntireJson: boolean = returnEntireJson === 'true' ? true : false;
+  const shouldReturnEntireJson: boolean = returnEntireJson === 'true' ? Boolean('true') : Boolean();
   const state = api.getCityState({ city: cityName, shouldReturnEntireJson });
   if (state) {
     res.json(state);
@@ -112,11 +113,16 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }) => 
 };
 
 api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
+  const memoizedCity = memoizedCities[city];
+  if (memoizedCity) {
+    return shouldReturnEntireJson ? memoizedCity : memoizedCity.state;
+  }
   const findCity = (element: stateType) => element.cities.indexOf(city) >= 0;
   const state: void | stateType = _.find(states, findCity);
   if (!state) {
     return shouldReturnEntireJson ? {} : '';
   }
+  memoizedCities[city] = state;
   return shouldReturnEntireJson ? state : state.state;
 };
 
