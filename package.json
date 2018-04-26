@@ -17,7 +17,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "node app.js",
+    "install": "npm install",
     "start:hotreload": "./node_modules/.bin/nodemon app.js",
     "pretest": "node_modules/.bin/babel src/ -d lib/",
     "test": "node_modules/.bin/mocha",
