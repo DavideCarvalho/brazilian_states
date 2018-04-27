@@ -17,7 +17,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "start:hotreload": "nodemon app.js",
     "pretest": "babel src/ -d lib/",
     "test": "nyc --require babel-core/register mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
@@ -26,11 +25,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "body-parser": "^1.18.2",
-    "consign": "^0.1.6",
-    "ejs": "^2.5.7",
-    "express": "^4.16.2",
-    "global": "^4.3.2",
     "lodash": "^4.17.5"
   },
   "devDependencies": {
