@@ -142,4 +142,4 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
   return shouldReturnEntireJson ? state : state.state;
 };
 
-export default api;
+module.exports = api;

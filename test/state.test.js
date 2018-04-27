@@ -7,7 +7,8 @@ const util = require('util');
 const debug = util.debuglog('performance');
 
 describe('state', () => {
-  it('should return the given state from fullname', () => {
+  it.only('should return the given state from fullname', () => {
+    console.log(api);
     const cities = api.getStateCities({ state: 'São Paulo' });
     expect(cities).to.deep.equal(spCities);
   });
