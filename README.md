@@ -41,6 +41,16 @@ const saoPauloCitiesAbbreviation = getStateCities({ state: 'sp' });
 // those two return the same thing
 ```
 
+The state is normalized before finding it, so you can write the name of the state even without accents and in lowercase or uppercase, e.g:
+```javascript
+const { getStateCities } = require('br_states')
+// or with ES6 import { getCitiesFromState } from 'br_states'
+
+const saoPauloCitiesFullname = getStateCities({ state: 'Sao Paulo' });
+const saoPauloCitiesAbbreviation = getStateCities({ state: 'sao paulo' });
+// those two return the same thing
+```
+
 ### ``getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}``
 
 If you have the name of the city and want to get the name of its state, this method is for you.

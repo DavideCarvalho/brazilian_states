@@ -1,5 +1,6 @@
 // @flow
 import _ from 'lodash';
+import removeAccents from 'remove-accents';
 import type { stateType } from '../types/stateType';
 import type { memoizedStateType } from '../types/memoizedStateType';
 import type { memoizedCityType } from '../types/memoizedCityType';
@@ -86,14 +87,15 @@ const requiredParam = (param) => {
  * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
  */
 api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?stateType => {
-  const findState = element => element.state === state || element.abbreviation === state;
-  const memoizedState: ?stateType = memoizedStates[state];
+  const normalizedState = removeAccents(state.toLowerCase());
+  const findState = element => removeAccents(element.state.toLowerCase()) === normalizedState || element.abbreviation === normalizedState;
+  const memoizedState: ?stateType = memoizedStates[normalizedState];
   if (memoizedState) {
     return memoizedState;
   }
   const stateFound: stateType | void = _.find(states, findState);
   if (stateFound) {
-    memoizedStates[state] = stateFound;
+    memoizedStates[normalizedState] = stateFound;
   }
   return stateFound;
 };

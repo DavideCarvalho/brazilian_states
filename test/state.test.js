@@ -11,6 +11,14 @@ describe('state', () => {
     const cities = api.getStateCities({ state: 'São Paulo' });
     expect(cities).to.deep.equal(spCities);
   });
+  it('should return the given state from fullname even if the name doesnt have accents', () => {
+    const cities = api.getStateCities({ state: 'Sao Paulo' });
+    expect(cities).to.deep.equal(spCities);
+  });
+  it('should return the given state from fullname even if the name is on lowercase and doesnt have accents', () => {
+    const cities = api.getStateCities({ state: 'sao Paulo' });
+    expect(cities).to.deep.equal(spCities);
+  });
   it('should return undefined if fullname state not found', () => {
     const cities = api.getStateCities({ state: 'someRandomState' });
     expect(cities).to.equal(undefined);
