@@ -1,4 +1,5 @@
 /node_modules
 /.cache
 /dist
+.nyc_output
 yarn-error.log

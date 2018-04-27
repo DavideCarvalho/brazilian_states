@@ -17,13 +17,13 @@
   },
   "license": "MIT",
   "scripts": {
-    "start:hotreload": "./node_modules/.bin/nodemon app.js",
-    "pretest": "node_modules/.bin/babel src/ -d lib/",
-    "test": "node_modules/.bin/nyc node_modules/.bin/mocha",
+    "start:hotreload": "nodemon app.js",
+    "pretest": "babel src/ -d lib/",
+    "test": "nyc mocha",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "node_modules/.bin/babel src/ -d lib/",
-    "generatedoc": "node_modules/.bin/documentation build src/** -f md -o docs.md",
-    "lint": "node_modules/.bin/eslint"
+    "build": "babel src/ -d lib/",
+    "generatedoc": "documentation build src/** -f md -o docs.md",
+    "lint": "eslint"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
