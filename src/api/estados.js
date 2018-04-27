@@ -76,32 +76,6 @@ const requiredParam = (param) => {
   throw requiredParamError;
 };
 
-api.getStateCitiesRoute = (req: express$Request, res: express$Response) => {
-  const state = api.getStateCities({ state: req.params.uf });
-  if (state) {
-    res.json(state);
-  } else {
-    res.json({ error: 'Not a valid state' }).status(400);
-  }
-};
-
-api.getCityStatesRoute = (req: express$Request, res: express$Response) => {
-  const { query: { returnEntireJson } }: { query: { returnEntireJson: string | Array<string> } } = req;
-  const { params: { cityName } }: { params: { cityName: string } } = req;
-  const shouldReturnEntireJson: boolean = returnEntireJson === 'true' ? Boolean('true') : Boolean();
-  const state = api.getCityState({ city: cityName, shouldReturnEntireJson });
-  if (state) {
-    res.json(state);
-  } else {
-    res.json({ error: 'Not a valid city name' }).status(400);
-  }
-};
-
-api.renderStatesDocumentation = (req: express$Request, res: express$Response) => {
-  res.render('estados_endpoint');
-};
-
-
 /**
  * This function returns an array with the cities of the given state
  * @param {Object} stateObject - The object the tells the name of the state.
@@ -168,4 +142,4 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
   return shouldReturnEntireJson ? state : state.state;
 };
 
-module.exports = api;
+export default api;
