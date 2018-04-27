@@ -2,7 +2,7 @@
     <a href="https://www.npmjs.com/package/br_states"><img src="https://img.shields.io/npm/v/br_states.svg?maxAge=3600" alt="NPM version" /></a>
     <a href="https://www.npmjs.com/package/br_states"><img src="https://img.shields.io/npm/dt/br_states.svg?maxAge=3600" alt="NPM downloads" /></a>
     <a href='https://coveralls.io/github/DavideCarvalho/brazilian_states?branch=master'><img src='https://coveralls.io/repos/github/DavideCarvalho/brazilian_states/badge.svg?branch=master' alt='Coverage Status' /></a>
-    <a href='#' src='https://api.travis-ci.org/DavideCarvalho/brazilian_states.svg?branch=master' alt='Build Status' /><a/>
+    <img src="https://img.shields.io/npm/dt/br_states.svg?maxAge=3600" alt="Build Status" />
 </p>
 
 # Br States
