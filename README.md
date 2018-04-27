@@ -6,7 +6,6 @@
     <img src="https://img.shields.io/david/DavideCarvalho/brazilian_states.svg" alt='Dependencies Status' />
     <img src="https://img.shields.io/github/repo-size/DavideCarvalho/brazilian_states.svg" alt='Repo Size' />
     <img src="https://img.shields.io/github/last-commit/DavideCarvalho/brazilian_states.svg" alt='Last Commit' />
-    <a href='https://www.npmjs.com/package/br_states'><img src='https://img.shields.io/npm/v/br_states.svg' alt='NPM repo' /></a>
 </p>
 
 # Br States
