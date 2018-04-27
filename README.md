@@ -41,15 +41,15 @@ const saoPauloCitiesAbbreviation = getStateCities({ state: 'sp' });
 // those two return the same thing
 ```
 
-### ``getCityState({city: string!, returnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}``
+### ``getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}``
 
 If you have the name of the city and want to get the name of its state, this method is for you.
-Just put the name on city parameter and it will return you the entire json object or only the state name (based on returnEntireJson value, if returnEntireJson is not set, the default value is false).
+Just put the name on city parameter and it will return you the entire json object or only the state name (based on shouldReturnEntireJson value, if shouldReturnEntireJson is not set, the default value is false).
 
 ```javascript
 const { getCityState } = require('br_states')
 // or with ES6 import { getStateFromCity } from 'br_states'
 
 const santosStateName = getCityState({city: 'Santos'}); // São Paulo
-const santosStateObject = getCityState({city: 'Santos', returnEntireJson: true}); // it will return the entire state object
+const santosStateObject = getCityState({city: 'Santos', shouldReturnEntireJson: true}); // it will return the entire state object
 ```
