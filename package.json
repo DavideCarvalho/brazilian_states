@@ -54,5 +54,11 @@
     "mocha": "^5.1.1",
     "nodemon": "^1.17.3",
     "nyc": "^11.7.1"
+  },
+  "nyc": {
+    "exclude": [
+      "src/api/estados/**.js",
+      "test"
+    ]
   }
 }
