@@ -62,10 +62,15 @@ const states: Array<stateType> = [
   to,
 ];
 
+const normalizedCities = _.map(states, (state) => {
+  const stateCitiesNormalized = _.map(state.cities, city => removeAccents(city.toLowerCase()));
+  return { ...state, cities: stateCitiesNormalized };
+});
+
 const memoizedStates: memoizedStateType = {};
 const memoizedCities: memoizedCityType = {};
 
-const requiredParam = (param) => {
+const requiredParam = (param: string) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
   // preserve original stack trace
   if (typeof Error.captureStackTrace === 'function') {
@@ -131,17 +136,21 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?s
  * // {}
  */
 api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
-  const memoizedCity = memoizedCities[city];
+  const normalizedCity = removeAccents(city.toLowerCase());
+  const memoizedCity = memoizedCities[normalizedCity];
   if (memoizedCity) {
     return shouldReturnEntireJson ? memoizedCity : memoizedCity.state;
   }
-  const findCity = (element: stateType) => element.cities.indexOf(city) >= 0;
-  const state: void | stateType = _.find(states, findCity);
+  const findCity = (element: stateType) => element.cities.indexOf(normalizedCity) >= 0;
+  const state: void | stateType = _.find(normalizedCities, findCity);
   if (!state) {
     return shouldReturnEntireJson ? {} : '';
   }
-  memoizedCities[city] = state;
-  return shouldReturnEntireJson ? state : state.state;
+  const stateIndex = normalizedCities.indexOf(state);
+  const realState = states[stateIndex];
+  memoizedCities[normalizedCity] = realState;
+  return shouldReturnEntireJson ? realState : realState.state;
 };
 
 module.exports = api;
+module.exports.requiredParam = requiredParam;

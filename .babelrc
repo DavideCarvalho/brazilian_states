@@ -1,4 +1,4 @@
 {
   "presets": ["flow", "import-export"],
-  "plugins": ["transform-object-rest-spread"]
+  "plugins": ["transform-object-rest-spread", "add-module-exports"]
 }
