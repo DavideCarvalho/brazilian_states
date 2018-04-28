@@ -66,3 +66,13 @@ const { getCityState } = require('br_states')
 const santosStateName = getCityState({city: 'Santos'}); // São Paulo
 const santosStateObject = getCityState({city: 'Santos', shouldReturnEntireJson: true}); // it will return the entire state object
 ```
+
+Just like the state, the city name is normalized as well, so you can write the name as it should be, or write all lowercased or uppercased without any accents:
+```javascript
+const { getStateCities } = require('br_states')
+// or with ES6 import { getCitiesFromState } from 'br_states'
+
+const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
+const guarujaStateNotExactly = getStateCities({ state: 'guaruja' });
+// those two return the same thing
+```
