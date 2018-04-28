@@ -1,2 +1,3 @@
 --require flow-remove-types/register
+--require babel-core/register
 --recursive

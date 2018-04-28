@@ -1,9 +1,10 @@
-const api = require('../src/api/estados');
-const spCities = require('../src/api/estados/saopaulo');
-const _ = require('lodash');
-const { expect } = require('chai');
-const _performance = require('perf_hooks').performance;
-const util = require('util');
+import _ from 'lodash';
+import { expect } from 'chai';
+import util from 'util';
+import { performance as _performance } from 'perf_hooks';
+import api, { requiredParam } from '../src/api/estados';
+import spCities from '../src/api/estados/saopaulo';
+
 const debug = util.debuglog('performance');
 
 describe('state', () => {
@@ -52,6 +53,9 @@ describe('state', () => {
   it('should return json object of the state that has the given city if shouldReturnEntireJson is set to true', () => {
     expect(api.getCityState({ city: 'Santos', shouldReturnEntireJson: true })).to.deep.equal(spCities);
   });
+  it('should return json object if city name is written as guaruja and not Guarujá', () => {
+    expect(api.getCityState({ city: 'guaruja', shouldReturnEntireJson: true })).to.deep.equal(spCities);
+  });
   it('second call to getCityState function with the same parameters as the first call should be faster', () => {
     _performance.mark('starting first run');
     api.getCityState({ city: 'Santos', shouldReturnEntireJson: true });
@@ -80,5 +84,8 @@ describe('state', () => {
   });
   it('should return empty string if nothing is found and shouldReturnEntireJson is not set', () => {
     expect(api.getCityState({ city: 'asldjoijsda' })).to.be.deep.equal('');
+  });
+  it('should throw the required param', () => {
+    expect(() => requiredParam('myParam')).to.throw();
   });
 });
