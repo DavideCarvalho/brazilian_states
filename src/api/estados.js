@@ -152,5 +152,23 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
   return shouldReturnEntireJson ? realState : realState.state;
 };
 
+/**
+  Function that memoize all the states and cities, doing it eagerly.
+
+  @example
+  api.eagerMemoization();
+  // Using it will memoize everything, making api.getCityState and api.getStateCities faster
+*/
+api.eagerMemoization = (): void => {
+  _.forEach(states, (state) => {
+    const normalizedStateName = removeAccents(state.state.toLowerCase());
+    memoizedStates[normalizedStateName] = state;
+    _.forEach(state.cities, (city) => {
+      const normalizedCityName = removeAccents(city.toLowerCase());
+      memoizedCities[normalizedCityName] = state;
+    });
+  });
+};
+
 module.exports = api;
 module.exports.requiredParam = requiredParam;

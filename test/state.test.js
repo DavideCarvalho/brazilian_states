@@ -6,6 +6,7 @@ import api, { requiredParam } from '../src/api/estados';
 import spCities from '../src/api/estados/saopaulo';
 
 const debug = util.debuglog('performance');
+let memoizedRun;
 
 describe('state', () => {
   it('should return the given state from fullname', () => {
@@ -38,6 +39,7 @@ describe('state', () => {
     _performance.measure('returning first run', 'starting first run', 'ending first run');
     _performance.measure('returning memoized run', 'starting memoized run', 'ending memoized run');
     const [firstCall, memoizedCall] = _performance.getEntriesByType('measure');
+    memoizedRun = firstCall;
     expect(memoizedCall.duration).to.be.below(firstCall.duration);
   });
   it('should return undefined if abbreviation state not found', () => {
@@ -87,5 +89,14 @@ describe('state', () => {
   });
   it('should throw the required param', () => {
     expect(() => requiredParam('myParam')).to.throw();
+  });
+  it('should make getStateCities first run faster after using eagerMemoization', () => {
+    api.eagerMemoization();
+    _performance.mark('starting first run');
+    api.getStateCities({ state: 'São Paulo' });
+    _performance.mark('ending first run');
+    _performance.measure('returning first run', 'starting first run', 'ending first run');
+    const [firstCallAfterEagerMemoization] = _performance.getEntriesByType('measure');
+    expect(firstCallAfterEagerMemoization.duration).to.be.equal(memoizedRun.duration);
   });
 });
