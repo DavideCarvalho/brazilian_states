@@ -63,8 +63,8 @@ Just put the name on city parameter and it will return you the entire json objec
 const { getCityState } = require('br_states')
 // or with ES6 import { getStateFromCity } from 'br_states'
 
-const santosStateName = getCityState({city: 'Santos'}); // São Paulo
-const santosStateObject = getCityState({city: 'Santos', shouldReturnEntireJson: true}); // it will return the entire state object
+const santosStateName = getCityState({ city: 'Santos' }); // São Paulo
+const santosStateObject = getCityState({ city: 'Santos', shouldReturnEntireJson: true }); // it will return the entire state object
 ```
 
 Just like the state, the city name is normalized as well, so you can write the name as it should be, or write all lowercased or uppercased without any accents:
@@ -73,6 +73,16 @@ const { getStateCities } = require('br_states')
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
 const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
-const guarujaStateNotExactly = getStateCities({ state: 'guaruja' });
+const guarujaStateNotExactly = getStateCities({ city: 'guaruja' });
 // those two return the same thing
+```
+
+All methods are memoized while you use it, so consecutive uses with the same parameter can be returned faster. If you want to memoize it right from the start, you can use ``eagerMemoization()`` method.
+```javascript
+const { eagerMemoization, getCityState, getStateCities } = require('br_states')
+// or with ES6 import { getCitiesFromState } from 'br_states'
+eagerMemoization();
+const saoPauloCitiesFullname = getStateCities({ state: 'São Paulo' });
+const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
+// those methods will have performance increased, since the states and the cities are all memoized and ready to be find easily thanks to eagerMemoization()
 ```
