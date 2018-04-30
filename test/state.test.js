@@ -39,7 +39,7 @@ describe('state', () => {
     _performance.measure('returning first run', 'starting first run', 'ending first run');
     _performance.measure('returning memoized run', 'starting memoized run', 'ending memoized run');
     const [firstCall, memoizedCall] = _performance.getEntriesByType('measure');
-    firstRun = firstCall;
+    memoizedRun = firstCall;
     expect(memoizedCall.duration).to.be.below(firstCall.duration);
   });
   it('should return undefined if abbreviation state not found', () => {
