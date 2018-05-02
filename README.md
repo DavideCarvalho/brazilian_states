@@ -6,6 +6,7 @@
     <img src="https://img.shields.io/david/DavideCarvalho/brazilian_states.svg" alt='Dependencies Status' />
     <img src="https://img.shields.io/github/repo-size/DavideCarvalho/brazilian_states.svg" alt='Repo Size' />
     <img src="https://img.shields.io/github/last-commit/DavideCarvalho/brazilian_states.svg" alt='Last Commit' />
+    <img src="https://img.shields.io/github/license/DavideCarvalho/brazilian_states.svg" alt='License' />
 </p>
 
 # Br States
