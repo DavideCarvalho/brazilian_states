@@ -62,6 +62,56 @@ const states: Array<stateType> = [
   to,
 ];
 
+const southEastStates: Array<string> = ['São Paulo', 'Rio de Janeiro', 'Espírito Santo', 'Minas Gerais'];
+const southRegionStates: Array<string> = ['Paraná', 'Rio Grande do Sul', 'Santa Catarina'];
+const northRegionStates: Array<string> = ['Acre', 'Amapá', 'Amazonas', 'Pará', 'Rondonia', 'Roraima', 'Tocantins'];
+const northEastRegionStates: Array<string> = ['Alagoas', 'Bahia', 'Maranhão', 'Paraiba', 'Pernambuco', 'Piauí', 'Rio Grande do Norte', 'Sergipe'];
+const middleEastRegionStates: Array<string> = ['Distrito Federal', 'Goiás', 'Mato Grosso', 'Mato Grosso do Sul'];
+
+const southEastRegionStatesAndCities = _
+  .filter(states, state => southEastStates.indexOf(state.state) !== -1);
+const southRegionStatesAndCities = _
+  .filter(states, state => southRegionStates.indexOf(state.state) !== -1);
+const northRegionStatesAndCities = _
+  .filter(states, state => northRegionStates.indexOf(state.state) !== -1);
+const northEastRegionStatesAndCities = _
+  .filter(states, state => northEastRegionStates.indexOf(state.state) !== -1);
+const middleEastRegionStatesAndCities = _
+  .filter(states, state => middleEastRegionStates.indexOf(state.state) !== -1);
+
+const southEastRegionData = {
+  regionName: 'Sudeste',
+  states: southEastRegionStatesAndCities,
+};
+
+const southRegionData = {
+  regionName: 'Sul',
+  states: southRegionStatesAndCities,
+};
+
+const northRegionData = {
+  regionName: 'Norte',
+  states: northRegionStatesAndCities,
+};
+
+const northEastRegionData = {
+  regionName: 'Nordeste',
+  states: northEastRegionStatesAndCities,
+};
+
+const middleEastRegionData = {
+  regionName: 'Centro-Oeste',
+  states: middleEastRegionStatesAndCities,
+};
+
+const regions = {
+  norte: northRegionData,
+  nordeste: northEastRegionData,
+  ['centro-oeste']: middleEastRegionData,
+  sudeste: southEastRegionData,
+  sul: southRegionData,
+};
+
 const normalizedCities = _.map(states, (state) => {
   const stateCitiesNormalized = _.map(state.cities, city => removeAccents(city.toLowerCase()));
   return { ...state, cities: stateCitiesNormalized };
@@ -80,6 +130,24 @@ const requiredParam = (param: string) => {
     );
   }
   throw requiredParamError;
+};
+
+type regionType = {
+  regionName: string,
+  states: Array<stateType>
+}
+
+api.getAllRegions = (): [ regionType ] => _.map(regions, region => region);
+
+api.getRegion = ({ region = requiredParam('region') }: { region: string | Array<string> }) => {
+  if (Array.isArray(region)) {
+    return _.map(region, (singleRegion) => {
+      const normalizedRegionName = removeAccents(singleRegion.toLowerCase());
+      return regions[normalizedRegionName];
+    });
+  }
+  const normalizedRegionName = removeAccents(region.toLowerCase());
+  return regions[normalizedRegionName];
 };
 
 /**
