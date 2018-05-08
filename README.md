@@ -34,7 +34,7 @@ import brStates from 'br_states';
 
 ## Methods
 
-### `getStateCities({state: string!}): {cities: state: string, abbreviation: string, cities:[string]}`
+### `getStateCities({state: string!}): {cities: state: string, abbreviation: string, cities:Array<string>}`
 
 This method take one parameter (this parameter is required, otherwise it will throw an error) with the state name or abbreviation and returns its cities;
 
@@ -58,7 +58,7 @@ const saoPauloCitiesAbbreviation = getStateCities({ state: 'sao paulo' });
 // those two return the same thing
 ```
 
-### `getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}`
+### `getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:Array<string>}`
 
 If you have the name of the city and want to get the name of its state, this method is for you.
 Just put the name on city parameter and it will return you the entire json object or only the state name (based on shouldReturnEntireJson value, if shouldReturnEntireJson is not set, the default value is false).
@@ -98,7 +98,7 @@ const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
 
 You can work with brazilian regions too!
 
-### `getAllRegions({shouldReturnEntireJson: boolean}): string[] | stateType[]`
+### `getAllRegions({shouldReturnEntireJson: boolean = false}): Array<string> | Array<stateType>`
 
 This function will return all regions for you. If you don't pass `shouldReturnEntireJson` or set it to `false`, it will return only the name of the regions. If `shouldReturnEntireJson` is `true`, it will return all the regions and within the regions, all the states, each of them with each city.
 
@@ -126,7 +126,7 @@ const allRegionsObjectsSettingShouldReturnEntireJson = getAllRegions({
 */
 ```
 
-### `getRegion({ region: string | string[] }): stateType | stateType[]`
+### `getRegion({ region: string | Array<string> }): stateType | Array<stateType>`
 
 If you don't need all the regions, you can use this method. Just send a ``string`` or an ``Array of string`` to the ``region`` property and it will return a state with it's cities or an array of states, respectively.
 
