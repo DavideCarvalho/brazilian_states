@@ -85,7 +85,7 @@ const guarujaStateNotExactly = getStateCities({ city: 'guaruja' });
 // those two return the same thing
 ```
 
-getCityState and getStateCities are memoized while you use it, so consecutive uses with the same parameter can be returned faster. If you want to memoize it right from the start, you can use `eagerMemoization()` method.
+``getCityState`` and ``getStateCities`` are memoized while you use it, so consecutive uses with the same parameter can be returned faster. If you want to memoize it right from the start, you can use `eagerMemoization()` method.
 
 ```javascript
 const { eagerMemoization, getCityState, getStateCities } = require('br_states');
