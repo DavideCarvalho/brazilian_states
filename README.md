@@ -9,34 +9,37 @@
 </p>
 
 # Br States
+
 > Simple api to help on operations with cities and states without the need of an http request to a remote service
 
 # Npm Package
+
 ## How to use
-``yarn add https://www.npmjs.com/package/br_states``  
+
+`yarn add https://www.npmjs.com/package/br_states`  
 or  
-``npm i https://www.npmjs.com/package/br_states``
+`npm i https://www.npmjs.com/package/br_states`
 
 now require it from your modules:
 
 ```javascript
-const brStates = require('br_states')
+const brStates = require('br_states');
 ```
 
 or with ES6
 
 ```javascript
-import brStates from 'br_states'
+import brStates from 'br_states';
 ```
 
 ## Methods
 
-### ``getStateCities({state: string!}): {cities: state: string, abbreviation: string, cities:[string]}``
+### `getStateCities({state: string!}): {cities: state: string, abbreviation: string, cities:[string]}`
 
 This method take one parameter (this parameter is required, otherwise it will throw an error) with the state name or abbreviation and returns its cities;
 
 ```javascript
-const { getStateCities } = require('br_states')
+const { getStateCities } = require('br_states');
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
 const saoPauloCitiesFullname = getStateCities({ state: 'São Paulo' });
@@ -45,8 +48,9 @@ const saoPauloCitiesAbbreviation = getStateCities({ state: 'sp' });
 ```
 
 The state is normalized before finding it, so you can write the name of the state even without accents and in lowercase or uppercase, e.g:
+
 ```javascript
-const { getStateCities } = require('br_states')
+const { getStateCities } = require('br_states');
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
 const saoPauloCitiesFullname = getStateCities({ state: 'Sao Paulo' });
@@ -54,22 +58,26 @@ const saoPauloCitiesAbbreviation = getStateCities({ state: 'sao paulo' });
 // those two return the same thing
 ```
 
-### ``getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}``
+### `getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:[string]}`
 
 If you have the name of the city and want to get the name of its state, this method is for you.
 Just put the name on city parameter and it will return you the entire json object or only the state name (based on shouldReturnEntireJson value, if shouldReturnEntireJson is not set, the default value is false).
 
 ```javascript
-const { getCityState } = require('br_states')
+const { getCityState } = require('br_states');
 // or with ES6 import { getStateFromCity } from 'br_states'
 
 const santosStateName = getCityState({ city: 'Santos' }); // São Paulo
-const santosStateObject = getCityState({ city: 'Santos', shouldReturnEntireJson: true }); // it will return the entire state object
+const santosStateObject = getCityState({
+  city: 'Santos',
+  shouldReturnEntireJson: true,
+}); // it will return the entire state object
 ```
 
 Just like the state, the city name is normalized as well, so you can write the name as it should be, or write all lowercased or uppercased without any accents:
+
 ```javascript
-const { getStateCities } = require('br_states')
+const { getStateCities } = require('br_states');
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
 const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
@@ -77,12 +85,63 @@ const guarujaStateNotExactly = getStateCities({ city: 'guaruja' });
 // those two return the same thing
 ```
 
-All methods are memoized while you use it, so consecutive uses with the same parameter can be returned faster. If you want to memoize it right from the start, you can use ``eagerMemoization()`` method.
+getCityState and getStateCities are memoized while you use it, so consecutive uses with the same parameter can be returned faster. If you want to memoize it right from the start, you can use `eagerMemoization()` method.
+
 ```javascript
-const { eagerMemoization, getCityState, getStateCities } = require('br_states')
+const { eagerMemoization, getCityState, getStateCities } = require('br_states');
 // or with ES6 import { getCitiesFromState } from 'br_states'
 eagerMemoization();
 const saoPauloCitiesFullname = getStateCities({ state: 'São Paulo' });
 const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
 // those methods will have performance increased, since the states and the cities are all memoized and ready to be find easily thanks to eagerMemoization()
+```
+
+You can work with brazilian regions too!
+
+### `getAllRegions({shouldReturnEntireJson: boolean}): string[] | stateType[]`
+
+This function will return all regions for you. If you don't pass `shouldReturnEntireJson` or set it to `false`, it will return only the name of the regions. If `shouldReturnEntireJson` is `true`, it will return all the regions and within the regions, all the states, each of them with each city.
+
+```javascript
+const { getAllRegions } = require('br_states');
+// or with ES6 import { getAllRegions } from 'br_states'
+const allRegionsNamesWithoutSettingShouldReturnEntireJson = getAllRegions({});
+// [ Norte, Nordeste, Centro-Oeste, Sudeste, Sul ];
+const allRegionsNamesSettingShouldReturnEntireJson = getAllRegions({
+  shouldReturnEntireJson: false,
+});
+// [ Norte, Nordeste, Centro-Oeste, Sudeste, Sul ];
+const allRegionsObjectsSettingShouldReturnEntireJson = getAllRegions({
+  shouldReturnEntireJson: true,
+});
+/*
+[
+    {
+      regionName: Norte
+      states: [
+        // all the states of this region
+      ]
+    }...
+]
+*/
+```
+
+### `getRegion({ region: string | string[] }): stateType | stateType[]`
+
+If you don't need all the regions, you can use this method. Just send a ``string`` or an ``Array of string`` to the ``region`` property and it will return a state with it's cities or an array of states, respectively.
+
+```javascript
+const { getRegion } = require('br_states');
+// or with ES6 import { getAllRegions } from 'br_states'
+const region = getRegion({ region: 'Centro-Oeste' });
+/*
+{
+  regionName: Norte
+  states: [
+    // all the states of this region
+  ]
+}
+*/
+const [southRegion, southEastRegion, middleEastRegion, northEastRegion, northRegion] = getRegion({ region: ['Sul', 'Sudeste', 'Centro-Oeste', 'Nordeste', 'Norte'] });
+// each of these variables will have the same type of object as above, changing the regionName for each region name and its respectives states
 ```

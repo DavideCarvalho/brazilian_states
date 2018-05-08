@@ -4,6 +4,7 @@ import removeAccents from 'remove-accents';
 import type { stateType } from '../types/stateType';
 import type { memoizedStateType } from '../types/memoizedStateType';
 import type { memoizedCityType } from '../types/memoizedCityType';
+import type { regionType } from '../types/regionType';
 import ac from './estados/acre';
 import al from './estados/alagoas';
 import am from './estados/amazonas';
@@ -107,7 +108,7 @@ const middleEastRegionData = {
 const regions = {
   norte: northRegionData,
   nordeste: northEastRegionData,
-  ['centro-oeste']: middleEastRegionData,
+  ['centrooeste']: middleEastRegionData,
   sudeste: southEastRegionData,
   sul: southRegionData,
 };
@@ -119,6 +120,12 @@ const normalizedCities = _.map(states, (state) => {
 
 const memoizedStates: memoizedStateType = {};
 const memoizedCities: memoizedCityType = {};
+
+const checkIfVariableIsBoolean = (variable: boolean, variableName: string) => {
+  if (variable !== true && variable !== false) {
+    throw new Error(`"${variableName}" parameter should be a boolean value`);
+  }
+};
 
 const requiredParam = (param: string) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
@@ -132,21 +139,22 @@ const requiredParam = (param: string) => {
   throw requiredParamError;
 };
 
-type regionType = {
-  regionName: string,
-  states: Array<stateType>
-}
-
-api.getAllRegions = (): [ regionType ] => _.map(regions, region => region);
+api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson: boolean}): Array<regionType> => {
+  checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
+  if (shouldReturnEntireJson) {
+    return _.map(regions, region => region);
+  }
+  return _.map(regions, region => region.regionName);
+};
 
 api.getRegion = ({ region = requiredParam('region') }: { region: string | Array<string> }) => {
   if (Array.isArray(region)) {
     return _.map(region, (singleRegion) => {
-      const normalizedRegionName = removeAccents(singleRegion.toLowerCase());
+      const normalizedRegionName = removeAccents(singleRegion.replace(/-/g, '').toLowerCase());
       return regions[normalizedRegionName];
     });
   }
-  const normalizedRegionName = removeAccents(region.toLowerCase());
+  const normalizedRegionName = removeAccents(region.replace(/-/g, '').toLowerCase());
   return regions[normalizedRegionName];
 };
 
@@ -204,6 +212,7 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?s
  * // {}
  */
 api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
+  checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
   const normalizedCity = removeAccents(city.toLowerCase());
   const memoizedCity = memoizedCities[normalizedCity];
   if (memoizedCity) {
@@ -217,7 +226,10 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
   const stateIndex = normalizedCities.indexOf(state);
   const realState = states[stateIndex];
   memoizedCities[normalizedCity] = realState;
-  return shouldReturnEntireJson ? realState : realState.state;
+  if (shouldReturnEntireJson) {
+    return realState;
+  }
+  return realState.state;
 };
 
 /**
