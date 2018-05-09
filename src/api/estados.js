@@ -1,5 +1,7 @@
 // @flow
-import _ from 'lodash';
+import map from 'lodash/map';
+import find from 'lodash/find';
+import forEach from 'lodash/forEach';
 import removeAccents from 'remove-accents';
 import type { stateType } from '../types/stateType';
 import type { memoizedStateType } from '../types/memoizedStateType';
@@ -113,8 +115,8 @@ const regions = {
   sul: southRegionData,
 };
 
-const normalizedCities = _.map(states, (state) => {
-  const stateCitiesNormalized = _.map(state.cities, city => removeAccents(city.replace(/\s|-|_/g, '').toLowerCase()));
+const normalizedCities = map(states, (state) => {
+  const stateCitiesNormalized = map(state.cities, city => removeAccents(city.replace(/\s|-|_/g, '').toLowerCase()));
   return { ...state, cities: stateCitiesNormalized };
 });
 
@@ -142,19 +144,19 @@ const requiredParam = (param: string) => {
 api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson: boolean}): Array<regionType> => {
   checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
   if (shouldReturnEntireJson) {
-    return _.map(regions, region => region);
+    return map(regions, region => region);
   }
-  return _.map(regions, region => region.regionName);
+  return map(regions, region => region.regionName);
 };
 
-api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): regionType => _.find(regions, region => _.find(region.states, (regionState) => {
+api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): regionType => find(regions, region => find(region.states, (regionState) => {
   const normalizedStateName = removeAccents(state.toLowerCase());
   return removeAccents(regionState.state.toLowerCase()) === normalizedStateName;
 }));
 
 api.getRegion = ({ region = requiredParam('region') }: { region: string | Array<string> }) => {
   if (Array.isArray(region)) {
-    return _.map(region, (singleRegion) => {
+    return map(region, (singleRegion) => {
       const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
       return regions[normalizedRegionName];
     });
@@ -179,7 +181,7 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?s
   if (memoizedState) {
     return memoizedState;
   }
-  const stateFound: stateType | void = _.find(states, findState);
+  const stateFound: stateType | void = find(states, findState);
   if (stateFound) {
     memoizedStates[normalizedState] = stateFound;
   }
@@ -224,7 +226,7 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
     return shouldReturnEntireJson ? memoizedCity : memoizedCity.state;
   }
   const findCity = (element: stateType) => element.cities.indexOf(normalizedCity) >= 0;
-  const state: void | stateType = _.find(normalizedCities, findCity);
+  const state: void | stateType = find(normalizedCities, findCity);
   if (!state) {
     return shouldReturnEntireJson ? {} : '';
   }
@@ -245,10 +247,10 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
   // Using it will memoize everything, making api.getCityState and api.getStateCities faster
 */
 api.eagerMemoization = (): void => {
-  _.forEach(states, (state) => {
+  forEach(states, (state) => {
     const normalizedStateName = removeAccents(state.state.toLowerCase());
     memoizedStates[normalizedStateName] = state;
-    _.forEach(state.cities, (city) => {
+    forEach(state.cities, (city) => {
       const normalizedCityName = removeAccents(city.toLowerCase());
       memoizedCities[normalizedCityName] = state;
     });
