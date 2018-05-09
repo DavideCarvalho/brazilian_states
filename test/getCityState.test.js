@@ -27,6 +27,18 @@ describe('getCityState', () => {
   it('should throw an error if shouldReturnEntireJson is a string with false', () => {
     expect(() => getCityState({ city: 'guaruja', shouldReturnEntireJson: 'false' })).to.throw();
   });
+  it('should return json object if city name with hyphens searched', () => {
+    expect(getCityState({ city: 'Biritiba-Mirim', shouldReturnEntireJson: true })).to.deep.equal(spCities);
+  });
+  it('should return json object if city name that contains hyphens is searched without hypens', () => {
+    expect(getCityState({ city: 'BiritibaMirim', shouldReturnEntireJson: true })).to.deep.equal(spCities);
+  });
+  it('should return json object if city name that contains hyphens is searched without hypens and lowercased', () => {
+    expect(getCityState({ city: 'biritibamirim', shouldReturnEntireJson: true })).to.deep.equal(spCities);
+  });
+  it('should return json object if city name that contains hyphens is searched without hypens and uppercased', () => {
+    expect(getCityState({ city: 'BIRITIBAMIRIM', shouldReturnEntireJson: true })).to.deep.equal(spCities);
+  });
   it('second call to getCityState function with the same parameters as the first call should be faster', () => {
     _performance.mark('starting first run');
     getCityState({ city: 'Santos', shouldReturnEntireJson: true });

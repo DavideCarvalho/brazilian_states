@@ -47,14 +47,17 @@ const saoPauloCitiesAbbreviation = getStateCities({ state: 'sp' });
 // those two return the same thing
 ```
 
-The state is normalized before finding it, so you can write the name of the state even without accents and in lowercase or uppercase, e.g:
+The state is normalized before finding it, so you can write the name of the state even without accents and in lowercase or uppercase. You can even write state name with hyphen, underline, with or without spaces, e.g:
 
 ```javascript
 const { getStateCities } = require('br_states');
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
 const saoPauloCitiesFullname = getStateCities({ state: 'Sao Paulo' });
-const saoPauloCitiesAbbreviation = getStateCities({ state: 'sao paulo' });
+const saoPauloCitiesNotExactly = getStateCities({ state: 'sao paulo' });
+const saoPauloCitiesNotExactlySecond = getStateCities({ state: 'sao-paulo' });
+const saoPauloCitiesNotExactlyThird = getStateCities({ state: 'sao_paulo' });
+const saoPauloCitiesNotExactlyFourth = getStateCities({ state: 'saopaulo' });
 // those two return the same thing
 ```
 
@@ -74,15 +77,18 @@ const santosStateObject = getCityState({
 }); // it will return the entire state object
 ```
 
-Just like the state, the city name is normalized as well, so you can write the name as it should be, or write all lowercased or uppercased without any accents:
+Just like the state, the city name is normalized as well, so you can write the name as it should be, or write all lowercased or uppercased without any accents. Since some cities have names with hyphens, those cases are normalized as well, e.g:
 
 ```javascript
 const { getStateCities } = require('br_states');
 // or with ES6 import { getCitiesFromState } from 'br_states'
 
-const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
-const guarujaStateNotExactly = getStateCities({ city: 'guaruja' });
-// those two return the same thing
+const guarujaStateExactly = getStateCities({ city: 'Biritiba-Mirim' });
+const guarujaStateNotExactly = getStateCities({ city: 'Biritiba Mirim' });
+const guarujaStateNotExactlySecond = getStateCities({ city: 'biritiba-mirim' });
+const guarujaStateNotExactlyThird = getStateCities({ city: 'biritibamirim' });
+const guarujaStateNotExactlyFourth = getStateCities({ city: 'BIRITIBAMIRIM' });
+// the result will be the same for every call, since the names are normalized before are searched
 ```
 
 ``getCityState`` and ``getStateCities`` are memoized while you use it, so consecutive uses with the same parameter can be returned faster. If you want to memoize it right from the start, you can use `eagerMemoization()` method.

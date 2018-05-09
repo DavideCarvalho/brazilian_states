@@ -114,7 +114,7 @@ const regions = {
 };
 
 const normalizedCities = _.map(states, (state) => {
-  const stateCitiesNormalized = _.map(state.cities, city => removeAccents(city.toLowerCase()));
+  const stateCitiesNormalized = _.map(state.cities, city => removeAccents(city.replace(/\s|-|_/g, '').toLowerCase()));
   return { ...state, cities: stateCitiesNormalized };
 });
 
@@ -147,14 +147,19 @@ api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson
   return _.map(regions, region => region.regionName);
 };
 
+api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): regionType => _.find(regions, region => _.find(region.states, (regionState) => {
+  const normalizedStateName = removeAccents(state.toLowerCase());
+  return removeAccents(regionState.state.toLowerCase()) === normalizedStateName;
+}));
+
 api.getRegion = ({ region = requiredParam('region') }: { region: string | Array<string> }) => {
   if (Array.isArray(region)) {
     return _.map(region, (singleRegion) => {
-      const normalizedRegionName = removeAccents(singleRegion.replace(/-/g, '').toLowerCase());
+      const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
       return regions[normalizedRegionName];
     });
   }
-  const normalizedRegionName = removeAccents(region.replace(/-/g, '').toLowerCase());
+  const normalizedRegionName = removeAccents(region.replace(/\s|-|_/g, '').toLowerCase());
   return regions[normalizedRegionName];
 };
 
@@ -168,8 +173,8 @@ api.getRegion = ({ region = requiredParam('region') }: { region: string | Array<
  * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
  */
 api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?stateType => {
-  const normalizedState = removeAccents(state.toLowerCase());
-  const findState = element => removeAccents(element.state.toLowerCase()) === normalizedState || element.abbreviation === normalizedState;
+  const normalizedState = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
+  const findState = element => removeAccents(element.state.replace(/\s|-|_/g, '').toLowerCase()) === normalizedState || element.abbreviation === normalizedState;
   const memoizedState: ?stateType = memoizedStates[normalizedState];
   if (memoizedState) {
     return memoizedState;
@@ -213,7 +218,7 @@ api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?s
  */
 api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = false }: { city: string, shouldReturnEntireJson?: boolean }): string | stateType | {} => {
   checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
-  const normalizedCity = removeAccents(city.toLowerCase());
+  const normalizedCity = removeAccents(city.replace(/\s|-|_/g, '').toLowerCase());
   const memoizedCity = memoizedCities[normalizedCity];
   if (memoizedCity) {
     return shouldReturnEntireJson ? memoizedCity : memoizedCity.state;

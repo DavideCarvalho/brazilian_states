@@ -18,7 +18,19 @@ describe('getStateCities', () => {
     expect(cities).to.deep.equal(spCities);
   });
   it('should return the given state from fullname even if the name is on lowercase and doesnt have accents', () => {
-    const cities = getStateCities({ state: 'sao Paulo' });
+    const cities = getStateCities({ state: 'sao paulo' });
+    expect(cities).to.deep.equal(spCities);
+  });
+  it('should return the given state from fullname even if the name is on lowercase, doesnt have accents and its not separated by spaces', () => {
+    const cities = getStateCities({ state: 'saopaulo' });
+    expect(cities).to.deep.equal(spCities);
+  });
+  it('should return the given state from fullname even if the name is on lowercase, doesnt have accents and its not separated by hyphen', () => {
+    const cities = getStateCities({ state: 'sao-paulo' });
+    expect(cities).to.deep.equal(spCities);
+  });
+  it('should return the given state from fullname even if the name is on lowercase, doesnt have accents and its not separated by underline', () => {
+    const cities = getStateCities({ state: 'sao_paulo' });
     expect(cities).to.deep.equal(spCities);
   });
   it('should return undefined if fullname state not found', () => {
