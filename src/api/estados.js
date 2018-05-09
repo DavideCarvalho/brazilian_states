@@ -2,6 +2,7 @@
 import map from 'lodash/map';
 import find from 'lodash/find';
 import forEach from 'lodash/forEach';
+import filter from 'lodash/filter';
 import removeAccents from 'remove-accents';
 import type { stateType } from '../types/stateType';
 import type { memoizedStateType } from '../types/memoizedStateType';
@@ -71,16 +72,11 @@ const northRegionStates: Array<string> = ['Acre', 'Amapá', 'Amazonas', 'Pará',
 const northEastRegionStates: Array<string> = ['Alagoas', 'Bahia', 'Maranhão', 'Paraiba', 'Pernambuco', 'Piauí', 'Rio Grande do Norte', 'Sergipe'];
 const middleEastRegionStates: Array<string> = ['Distrito Federal', 'Goiás', 'Mato Grosso', 'Mato Grosso do Sul'];
 
-const southEastRegionStatesAndCities = _
-  .filter(states, state => southEastStates.indexOf(state.state) !== -1);
-const southRegionStatesAndCities = _
-  .filter(states, state => southRegionStates.indexOf(state.state) !== -1);
-const northRegionStatesAndCities = _
-  .filter(states, state => northRegionStates.indexOf(state.state) !== -1);
-const northEastRegionStatesAndCities = _
-  .filter(states, state => northEastRegionStates.indexOf(state.state) !== -1);
-const middleEastRegionStatesAndCities = _
-  .filter(states, state => middleEastRegionStates.indexOf(state.state) !== -1);
+const southEastRegionStatesAndCities = filter(states, state => southEastStates.indexOf(state.state) !== -1);
+const southRegionStatesAndCities = filter(states, state => southRegionStates.indexOf(state.state) !== -1);
+const northRegionStatesAndCities = filter(states, state => northRegionStates.indexOf(state.state) !== -1);
+const northEastRegionStatesAndCities = filter(states, state => northEastRegionStates.indexOf(state.state) !== -1);
+const middleEastRegionStatesAndCities = filter(states, state => middleEastRegionStates.indexOf(state.state) !== -1);
 
 const southEastRegionData = {
   regionName: 'Sudeste',
