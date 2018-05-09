@@ -3,7 +3,7 @@ const am: stateType = {
   state: 'Amazonas',
   abbreviation: 'am',
   cities: [
-    'Alconstães',
+    'Alvares',
     'Amaturá',
     'Anamã',
     'Anori',

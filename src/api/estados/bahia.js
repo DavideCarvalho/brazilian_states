@@ -412,7 +412,7 @@ const ba: stateType = {
     'Várzea da Roça',
     'Várzea do Poço',
     'Várzea Nova',
-    'constzedo',
+    'Varzedo',
     'Vera Cruz',
     'Vereda',
     'Vitória da Conquista',

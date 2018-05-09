@@ -74,7 +74,7 @@ const es: stateType = {
     'São Roque do Canaã',
     'Serra',
     'Sooretama',
-    'constgem Alta',
+    'Vargem Alta',
     'Venda Nova do Imigrante',
     'Viana',
     'Vila Pavão',
