@@ -184,7 +184,7 @@ const ce: stateType = {
     'Umirim',
     'Uruburetama',
     'Uruoca',
-    'constjota',
+    'Varjota',
     'Várzea Alegre',
     'Viçosa do Ceará',
   ],

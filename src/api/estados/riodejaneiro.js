@@ -92,7 +92,7 @@ const rj: stateType = {
     'Trajano de Morais',
     'Três Rios',
     'Valença',
-    'constre-Sai',
+    'Varre-Sai',
     'Vassouras',
     'Volta Redonda',
   ],

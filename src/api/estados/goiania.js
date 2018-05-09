@@ -244,7 +244,7 @@ const go: stateType = {
     'Uruana',
     'Urutaí',
     'Valparaíso de Goiás',
-    'constjão',
+    'Varjão',
     'Vianópolis',
     'Vicentinópolis',
     'Vila Boa',
