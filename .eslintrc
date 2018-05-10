@@ -11,5 +11,7 @@
   },
   "rules": {
     "linebreak-style": "off",
+    "max-len": "off",
+    "no-useless-computed-key": "off"
   }
 }
