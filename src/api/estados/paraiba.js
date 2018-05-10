@@ -216,7 +216,7 @@ const pb: stateType = {
     'Sousa',
     'Sumé',
     'Taperoá',
-    'Taconstes',
+    'Tavares',
     'Teixeira',
     'Tenório',
     'Triunfo',
