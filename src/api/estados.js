@@ -72,11 +72,16 @@ const northRegionStates: Array<string> = ['Acre', 'Amapá', 'Amazonas', 'Pará',
 const northEastRegionStates: Array<string> = ['Alagoas', 'Bahia', 'Maranhão', 'Paraiba', 'Pernambuco', 'Piauí', 'Rio Grande do Norte', 'Sergipe'];
 const middleEastRegionStates: Array<string> = ['Distrito Federal', 'Goiás', 'Mato Grosso', 'Mato Grosso do Sul'];
 
-const southEastRegionStatesAndCities = filter(states, state => southEastStates.indexOf(state.state) !== -1);
-const southRegionStatesAndCities = filter(states, state => southRegionStates.indexOf(state.state) !== -1);
-const northRegionStatesAndCities = filter(states, state => northRegionStates.indexOf(state.state) !== -1);
-const northEastRegionStatesAndCities = filter(states, state => northEastRegionStates.indexOf(state.state) !== -1);
-const middleEastRegionStatesAndCities = filter(states, state => middleEastRegionStates.indexOf(state.state) !== -1);
+const southEastRegionStatesAndCities =
+  filter(states, state => southEastStates.indexOf(state.state) !== -1);
+const southRegionStatesAndCities =
+  filter(states, state => southRegionStates.indexOf(state.state) !== -1);
+const northRegionStatesAndCities =
+  filter(states, state => northRegionStates.indexOf(state.state) !== -1);
+const northEastRegionStatesAndCities =
+  filter(states, state => northEastRegionStates.indexOf(state.state) !== -1);
+const middleEastRegionStatesAndCities =
+  filter(states, state => middleEastRegionStates.indexOf(state.state) !== -1);
 
 const southEastRegionData = {
   regionName: 'Sudeste',
@@ -145,10 +150,16 @@ api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson
   return map(regions, region => region.regionName);
 };
 
-api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): regionType => find(regions, region => find(region.states, (regionState) => {
-  const normalizedStateName = removeAccents(state.toLowerCase());
-  return removeAccents(regionState.state.toLowerCase()) === normalizedStateName;
-}));
+api.getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType => {
+  const foundRegion = find(regions, region => find(region.states, (regionState) => {
+    const normalizedStateName = removeAccents(state.replace(/\s|-|_/g).toLowerCase());
+    return removeAccents(regionState.state.replace(/\s|-|_/g).toLowerCase()) === normalizedStateName;
+  }));
+  if (!foundRegion) {
+    return {};
+  }
+  return foundRegion;
+};
 
 api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }): Array<regionType> => {
   if (!Array.isArray(region)) {
@@ -158,6 +169,22 @@ api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }
     const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
     return regions[normalizedRegionName];
   });
+};
+
+api.getCityRegion = ({
+  city = requiredParam('city'),
+  shouldReturnEntireJson = false,
+}: {
+    city: string,
+    shouldReturnEntireJson: boolean,
+  }): ?string | ?regionType | ?stateType => {
+  const foundRegion = find(regions, region =>
+    find(region.states, state => state.cities.indexOf(city) >= 0));
+  if (shouldReturnEntireJson) {
+    const [foundState] = filter(foundRegion.states, state => state.cities.indexOf(city) >= 0);
+    return { ...foundRegion, cityState: foundState };
+  }
+  return foundRegion.regionName;
 };
 
 /**
@@ -243,10 +270,10 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
 */
 api.eagerMemoization = (): void => {
   forEach(states, (state) => {
-    const normalizedStateName = removeAccents(state.state.toLowerCase());
+    const normalizedStateName = removeAccents(state.state.replace(/\s|-|_/g).toLowerCase());
     memoizedStates[normalizedStateName] = state;
     forEach(state.cities, (city) => {
-      const normalizedCityName = removeAccents(city.toLowerCase());
+      const normalizedCityName = removeAccents(city.replace(/\s|-|_/g).toLowerCase());
       memoizedCities[normalizedCityName] = state;
     });
   });

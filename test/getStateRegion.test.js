@@ -10,6 +10,10 @@ describe('getStateRegion', () => {
     const regionFromSaoPaulo = getStateRegion({ state: 'sao paulo' });
     expect(regionFromSaoPaulo.regionName).to.be.equal('Sudeste');
   });
+  it('should return empty object if not a valid state is passed', () => {
+    const regionFromSaoPaulo = getStateRegion({ state: 'some state' });
+    expect(regionFromSaoPaulo).to.be.deep.equal({});
+  });
   it('should throw if state property is not given', () => {
     expect(() => getStateRegion({ random: 'property' })).to.throw();
   });
