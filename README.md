@@ -11,7 +11,7 @@
 
 # Br States
 
-> Simple api to help on operations with cities and states without the need of an http request to a remote service
+> Simple api to help on operations with cities, states and regions
 
 # Npm Package
 
@@ -133,21 +133,21 @@ const allRegionsObjectsSettingShouldReturnEntireJson = getAllRegions({
 */
 ```
 
-### `getRegion({ region: string | Array<string> }): stateType | Array<stateType>`
+### `getRegion({ region: Array<string> }): Array<stateType>`
 
-If you don't need all the regions, you can use this method. Just send a ``string`` or an ``Array of string`` to the ``region`` property and it will return a state with it's cities or an array of states, respectively.
+If you don't need all the regions, you can use this method. send an ``Array of string`` to the ``region`` property and it will return the states of every region sent on the array.
 
 ```javascript
 const { getRegion } = require('br_states');
 // or with ES6 import { getAllRegions } from 'br_states'
-const region = getRegion({ region: 'Centro-Oeste' });
+const region = getRegion({ region: ['Centro-Oeste'] });
 /*
-{
+[{
   regionName: Norte
   states: [
     // all the states of this region
   ]
-}
+}]
 */
 const [southRegion, southEastRegion, middleEastRegion, northEastRegion, northRegion] = getRegion({ region: ['Sul', 'Sudeste', 'Centro-Oeste', 'Nordeste', 'Norte'] });
 // each of these variables will have the same type of object as above, changing the regionName for each region name and its respectives states

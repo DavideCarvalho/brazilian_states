@@ -119,7 +119,7 @@ const normalizedCities = map(states, (state) => {
 const memoizedStates: memoizedStateType = {};
 const memoizedCities: memoizedCityType = {};
 
-const checkIfVariableIsBoolean = (variable: boolean, variableName: string) => {
+const checkIfVariableIsBoolean = (variable: boolean, variableName: string): void => {
   if (variable !== true && variable !== false) {
     throw new Error(`"${variableName}" parameter should be a boolean value`);
   }
@@ -150,15 +150,14 @@ api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): reg
   return removeAccents(regionState.state.toLowerCase()) === normalizedStateName;
 }));
 
-api.getRegion = ({ region = requiredParam('region') }: { region: string | Array<string> }) => {
-  if (Array.isArray(region)) {
-    return map(region, (singleRegion) => {
-      const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
-      return regions[normalizedRegionName];
-    });
+api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }): Array<regionType> => {
+  if (!Array.isArray(region)) {
+    throw new Error('region parameter should be an Array');
   }
-  const normalizedRegionName = removeAccents(region.replace(/\s|-|_/g, '').toLowerCase());
-  return regions[normalizedRegionName];
+  return map(region, (singleRegion) => {
+    const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
+    return regions[normalizedRegionName];
+  });
 };
 
 /**
@@ -221,8 +220,8 @@ api.getCityState = ({ city = requiredParam('city'), shouldReturnEntireJson = fal
   if (memoizedCity) {
     return shouldReturnEntireJson ? memoizedCity : memoizedCity.state;
   }
-  const findCity = (element: stateType) => element.cities.indexOf(normalizedCity) >= 0;
-  const state: void | stateType = find(normalizedCities, findCity);
+  const findCity = (element: stateType): boolean => element.cities.indexOf(normalizedCity) >= 0;
+  const state: ?stateType = find(normalizedCities, findCity);
   if (!state) {
     return shouldReturnEntireJson ? {} : '';
   }
@@ -255,3 +254,4 @@ api.eagerMemoization = (): void => {
 
 module.exports = api;
 module.exports.requiredParam = requiredParam;
+module.exports.checkIfVariableIsBoolean = checkIfVariableIsBoolean;
