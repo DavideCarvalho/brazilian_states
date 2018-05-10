@@ -145,10 +145,16 @@ api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson
   return map(regions, region => region.regionName);
 };
 
-api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): regionType => find(regions, region => find(region.states, (regionState) => {
-  const normalizedStateName = removeAccents(state.toLowerCase());
-  return removeAccents(regionState.state.toLowerCase()) === normalizedStateName;
-}));
+api.getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType => {
+  const foundRegion = find(regions, region => find(region.states, (regionState) => {
+    const normalizedStateName = removeAccents(state.toLowerCase());
+    return removeAccents(regionState.state.toLowerCase()) === normalizedStateName;
+  }));
+  if (!foundRegion) {
+    return {};
+  }
+  return foundRegion;
+};
 
 api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }): Array<regionType> => {
   if (!Array.isArray(region)) {
@@ -158,6 +164,21 @@ api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }
     const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
     return regions[normalizedRegionName];
   });
+};
+
+api.getCityRegion = ({
+  city = requiredParam('city'),
+  shouldReturnEntireJson = false,
+}: {
+    city: string,
+    shouldReturnEntireJson: boolean,
+  }): ?string | ?regionType | ?stateType => {
+  const foundRegion = find(regions, region => find(region.states, state => state.cities.indexOf(city) >= 0));
+  if (shouldReturnEntireJson) {
+    const [foundState] = filter(foundRegion.states, state => state.cities.indexOf(city) >= 0);
+    return { ...foundRegion, cityState: foundState };
+  }
+  return foundRegion.regionName;
 };
 
 /**
