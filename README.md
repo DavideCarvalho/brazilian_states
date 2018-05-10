@@ -140,7 +140,7 @@ If you don't need all the regions, you can use this method. send an ``Array of s
 ```javascript
 const { getRegion } = require('br_states');
 // or with ES6 import { getAllRegions } from 'br_states'
-const region = getRegion({ region: ['Centro-Oeste'] });
+const region = getRegion({ region: ['Norte'] });
 /*
 [{
   regionName: Norte
