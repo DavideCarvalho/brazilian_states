@@ -151,8 +151,8 @@ api.getStateRegion = ({ state = requiredParam('state') }: { state: string}): reg
 }));
 
 api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }): Array<regionType> => {
-  if(!Array.isArray(region)) {
-    throw new Error('region parameter should be an Array')
+  if (!Array.isArray(region)) {
+    throw new Error('region parameter should be an Array');
   }
   return map(region, (singleRegion) => {
     const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
