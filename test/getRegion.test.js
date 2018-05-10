@@ -4,24 +4,24 @@ import { getRegion } from '../src/api/estados';
 
 describe('getRegion', () => {
   it('should return only north region', () => {
-    const region = getRegion({ region: 'Norte' });
-    expect(region.regionName).to.be.equal('Norte');
+    const [northRegion] = getRegion({ region: ['Norte'] });
+    expect(northRegion.regionName).to.be.equal('Norte');
   });
   it('should return only northeast region', () => {
-    const region = getRegion({ region: 'Nordeste' });
-    expect(region.regionName).to.be.equal('Nordeste');
+    const [northEastRegion] = getRegion({ region: ['Nordeste'] });
+    expect(northEastRegion.regionName).to.be.equal('Nordeste');
   });
   it('should return only middleeast region', () => {
-    const region = getRegion({ region: 'Centro-Oeste' });
-    expect(region.regionName).to.be.equal('Centro-Oeste');
+    const [middleEastRegion] = getRegion({ region: ['Centro-Oeste'] });
+    expect(middleEastRegion.regionName).to.be.equal('Centro-Oeste');
   });
   it('should return only southeast region', () => {
-    const region = getRegion({ region: 'Sudeste' });
-    expect(region.regionName).to.be.equal('Sudeste');
+    const [southEastRegion] = getRegion({ region: ['Sudeste'] });
+    expect(southEastRegion.regionName).to.be.equal('Sudeste');
   });
   it('should return only south region', () => {
-    const region = getRegion({ region: 'Sul' });
-    expect(region.regionName).to.be.equal('Sul');
+    const [southRegion] = getRegion({ region: ['Sul'] });
+    expect(southRegion.regionName).to.be.equal('Sul');
   });
   it('should return two regions', () => {
     const [southRegion, southEastRegion] = getRegion({ region: ['Sul', 'Sudeste'] });
