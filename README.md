@@ -152,3 +152,52 @@ const region = getRegion({ region: ['Norte'] });
 const [southRegion, southEastRegion, middleEastRegion, northEastRegion, northRegion] = getRegion({ region: ['Sul', 'Sudeste', 'Centro-Oeste', 'Nordeste', 'Norte'] });
 // each of these variables will have the same type of object as above, changing the regionName for each region name and its respectives states
 ```
+
+### `getStateRegion({ state: string, shouldReturnEntireJson: boolean })`
+
+You can look get a region based on a state! Just send the state name on `state` property and it will return the region name. If you send `shouldReturnEntireJson`, it will return the entire region object.
+```javascript
+const { getStateRegion } = require('br_states');
+// or with ES6 import { getAllRegions } from 'br_states'
+const regionNameBasedOnStateName = getStateRegion({ state: 'São Paulo' });
+// Sudeste
+const regionNameBasedOnStateNameSecond = getStateRegion({ state: 'São Paulo', shouldReturnEntireJson: false });
+// Sudeste
+const regionObjectBasedOnStateName = getStateRegion({ state: 'São Paulo', shouldReturnEntireJson: true })
+/*
+[{
+  regionName: Sudeste
+  states: [
+    // all the states of this region
+  ]
+}]
+*/
+```
+
+The state name is normalized, so you can write your state in more ways and still get the right result!
+
+### `getCityRegion({ city: string, shouldReturnEntireJson: boolean })`
+
+If you just have the name of the city and want its region, you can still look for it! `getCityRegion` is here to help you with that, send a json with a property called `city` on the function parameter and it will return the region name. Like other methods, send `shouldReturnEntireJson` with `true` boolean value (NOT STRING) and it will return the json object with the region, and the state this city belongs separated from the other states.
+
+```javascript
+const { getCityRegion } = require('br_states');
+// or with ES6 import { getAllRegions } from 'br_states'
+const regionNameBasedOnCityName = getStateCity({ city: 'Santos' });
+// Sudeste
+const regionNameBasedOnCityNameSecond = getCityRegion({ city: 'Santos', shouldReturnEntireJson: false });
+// Sudeste
+const regionObjectBasedOnStateName = getCityRegion({ city: 'São Paulo', shouldReturnEntireJson: true })
+/*
+[{
+  regionName: Sudeste
+  states: [
+    // all the states of this region
+  ]
+  state: [
+    // state where this city belongs
+  ]
+}]
+*/
+```
+As you can see, this object has `state`and `states` objects. `state` object is the state where this city belongs, and `states` is all the states from this region, on this example, all the states on Sudeste region.

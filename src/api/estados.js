@@ -150,7 +150,10 @@ api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson
   return map(regions, region => region.regionName);
 };
 
-api.getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType => {
+api.getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType | {} => {
+  if (typeof state !== `string`) {
+    throw new Error(`variable state should be a string`);
+  };
   const foundRegion = find(regions, region => find(region.states, (regionState) => {
     const normalizedStateName = removeAccents(state.replace(/\s|-|_/g).toLowerCase());
     return removeAccents(regionState.state.replace(/\s|-|_/g).toLowerCase()) === normalizedStateName;
