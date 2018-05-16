@@ -56,6 +56,12 @@ describe('getRegion', () => {
   it('should throw an error if no object is sent to the function', () => {
     expect(() => getRegion()).to.throw();
   });
+  it('should throw an error if region is set to null', () => {
+    expect(() => getRegion({ region: null })).to.throw();
+  });
+  it('should throw an error if region is set to null', () => {
+    expect(() => getRegion({ region: undefined })).to.throw();
+  });
   it('should throw an error if region is not an array', () => {
     expect(() => getRegion({ region: 'testing' })).to.throw();
   });

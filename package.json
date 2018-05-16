@@ -2,7 +2,7 @@
   "name": "br_states",
   "version": "1.8.2",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "author": {
     "name": "Davi de Carvalho",
     "email": "davi_carvalho96@hotmail.com",

@@ -10,6 +10,11 @@ describe('getStateRegion', () => {
     const regionFromSaoPaulo = getStateRegion({ state: 'sao paulo' });
     expect(regionFromSaoPaulo.regionName).to.be.equal('Sudeste');
   });
+  it('should return from the memoized json', () => {
+    const regionFromSaoPaulo = getStateRegion({ state: 'sao paulo' });
+    const regionFromSaoPauloMemoized = getStateRegion({ state: 'sao paulo' });
+    expect(regionFromSaoPauloMemoized.regionName).to.be.equal('Sudeste');
+  });
   it(`should throw an error if state is not a string`, () => {
     expect(() => getStateRegion({ state: 123 })).to.throw();
   })

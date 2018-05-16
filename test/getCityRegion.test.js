@@ -12,6 +12,17 @@ describe('getCityRegion', () => {
     expect(cityRegion.regionName).to.be.equal('Sudeste');
     expect(cityRegion.cityState).to.be.equal(spCities);
   });
+  it('should memoized region', () => {
+    const cityRegion = getCityRegion({ city: 'Santos' });
+    const cityRegionMemoized = getCityRegion({ city: 'Santos' });
+    expect(cityRegionMemoized).to.be.equal('Sudeste');
+  });
+  it('should memoized region with shouldReturnEntireJson', () => {
+    const cityRegion = getCityRegion({ city: 'Santos', shouldReturnEntireJson: true });
+    const cityRegionMemoized = getCityRegion({ city: 'Santos', shouldReturnEntireJson: true });
+    expect(cityRegionMemoized.regionName).to.be.equal('Sudeste');
+    expect(cityRegionMemoized.cityState).to.be.equal(spCities);
+  });
   it('should throw error if city property is not defined', () => {
     expect(() => getCityRegion({})).to.throw();
   });

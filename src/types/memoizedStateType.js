@@ -1,4 +1,5 @@
 // @flow
+import type { stateType } from './stateType';
 /**
  * Type with state name, abbreviation and cities
  * @typedef {Object} memoizedStateType
@@ -7,4 +8,3 @@
 export type memoizedStateType = {
   [stateName: string]: stateType
 };
-

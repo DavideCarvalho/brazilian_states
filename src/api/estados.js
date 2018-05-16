@@ -8,6 +8,8 @@ import type { stateType } from '../types/stateType';
 import type { memoizedStateType } from '../types/memoizedStateType';
 import type { memoizedCityType } from '../types/memoizedCityType';
 import type { regionType } from '../types/regionType';
+import type { regionWithStateType } from '../types/regionWithStateType';
+import type { memoizedRegionWithStateType } from '../types/memoizedRegionWithStateType';
 import ac from './estados/acre';
 import al from './estados/alagoas';
 import am from './estados/amazonas';
@@ -123,10 +125,11 @@ const normalizedCities = map(states, (state) => {
 
 const memoizedStates: memoizedStateType = {};
 const memoizedCities: memoizedCityType = {};
+const memoizedRegions: memoizedRegionWithStateType = {};
 
 const checkIfVariableIsBoolean = (variable: boolean, variableName: string): void => {
   if (variable !== true && variable !== false) {
-    throw new Error(`"${variableName}" parameter should be a boolean value`);
+    throw new Error(`"${variableName}" parameter should be of boolean type`);
   }
 };
 
@@ -143,6 +146,7 @@ const requiredParam = (param: string) => {
 };
 
 api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson: boolean}): Array<regionType> => {
+  if (shouldReturnEntireJson === null) throw new Error('shouldReturnEntireJson property cannot be null ');
   checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
   if (shouldReturnEntireJson) {
     return map(regions, region => region);
@@ -150,28 +154,31 @@ api.getAllRegions = ({ shouldReturnEntireJson = false }: {shouldReturnEntireJson
   return map(regions, region => region.regionName);
 };
 
-api.getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType | {} => {
-  if (typeof state !== `string`) {
-    throw new Error(`variable state should be a string`);
-  };
-  const foundRegion = find(regions, region => find(region.states, (regionState) => {
-    const normalizedStateName = removeAccents(state.replace(/\s|-|_/g).toLowerCase());
-    return removeAccents(regionState.state.replace(/\s|-|_/g).toLowerCase()) === normalizedStateName;
-  }));
-  if (!foundRegion) {
-    return {};
-  }
-  return foundRegion;
-};
-
 api.getRegion = ({ region = requiredParam('region') }: { region: Array<string> }): Array<regionType> => {
-  if (!Array.isArray(region)) {
-    throw new Error('region parameter should be an Array');
-  }
+  if (!region) throw new Error('region parameter cannot be null or undefined');
+  if (!Array.isArray(region)) throw new Error('region parameter should be an Array');
   return map(region, (singleRegion) => {
     const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
     return regions[normalizedRegionName];
   });
+};
+
+api.getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType | {} => {
+  if (!state) throw new Error('state property cannot be null or undefined');
+  if (typeof state !== 'string') throw new Error('variable state should be a string');
+  const memoizedStateRegion = memoizedRegions[state];
+  if (!memoizedStateRegion) {
+    const foundRegion = find(regions, region => find(region.states, (regionState) => {
+      const normalizedStateName = removeAccents(state.replace(/\s|-|_/g).toLowerCase());
+      return removeAccents(regionState.state.replace(/\s|-|_/g).toLowerCase()) === normalizedStateName;
+    }));
+    if (!foundRegion) {
+      return {};
+    }
+    memoizedRegions[state] = foundRegion;
+    return foundRegion;
+  }
+  return memoizedStateRegion;
 };
 
 api.getCityRegion = ({
@@ -181,13 +188,24 @@ api.getCityRegion = ({
     city: string,
     shouldReturnEntireJson: boolean,
   }): ?string | ?regionType | ?stateType => {
-  const foundRegion = find(regions, region =>
-    find(region.states, state => state.cities.indexOf(city) >= 0));
-  if (shouldReturnEntireJson) {
+  if (typeof city !== 'string') throw new Error('city parameter must be a string');
+  if (typeof shouldReturnEntireJson !== 'boolean') throw new Error('shouldReturnEntireJson parameter must be a string');
+  const memoizedCityRegion: regionWithStateType = memoizedRegions[city];
+  if(!memoizedCityRegion) {
+    const foundRegion = find(regions, region =>
+      find(region.states, state => state.cities.indexOf(city) >= 0));
     const [foundState] = filter(foundRegion.states, state => state.cities.indexOf(city) >= 0);
-    return { ...foundRegion, cityState: foundState };
+    const foundRegionWithCityState = { ...foundRegion, cityState: foundState };
+    memoizedRegions[city] = foundRegionWithCityState;
+    if (shouldReturnEntireJson) {
+      return foundRegionWithCityState;
+    }
+    return foundRegionWithCityState.regionName;
   }
-  return foundRegion.regionName;
+  if (shouldReturnEntireJson) {
+    return memoizedCityRegion;
+  }
+  return memoizedCityRegion.regionName;
 };
 
 /**
@@ -200,18 +218,25 @@ api.getCityRegion = ({
  * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
  */
 api.getStateCities = ({ state = requiredParam('state') }: { state: string }): ?stateType => {
+  if (!state) throw new Error('state property cannot be null or undefined');
+  if (typeof state !== 'string') throw new Error ('state property must be a string');
   const normalizedState = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
-  const findState = element => removeAccents(element.state.replace(/\s|-|_/g, '').toLowerCase()) === normalizedState || element.abbreviation === normalizedState;
   const memoizedState: ?stateType = memoizedStates[normalizedState];
   if (memoizedState) {
     return memoizedState;
   }
-  const stateFound: stateType | void = find(states, findState);
+  const findStateInstantiated = findState(state);
+  const stateFound: ?stateType = find(states, findStateInstantiated);
   if (stateFound) {
     memoizedStates[normalizedState] = stateFound;
   }
   return stateFound;
 };
+
+const findState = (state: string) => {
+  const normalizedState = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
+  return (element) => removeAccents(element.state.replace(/\s|-|_/g, '').toLowerCase()) === normalizedState || element.abbreviation === normalizedState;
+}
 
 /**
  * This function receives the city name and returns the full json stateType object or only the name of the state depending on shouldReturnEntireJson property. If the state is not found, it returns an empty object or an empty string.
