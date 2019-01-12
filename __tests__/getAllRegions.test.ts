@@ -4,7 +4,7 @@ import { getAllRegions } from '../src/api/estados';
 describe('getAllRegions', () => {
   it('North region should have the right states', () => {
     const northRegionStates = ['Acre', 'Amapá', 'Amazonas', 'Pará', 'Rondonia', 'Roraima', 'Tocantins'];
-    const [northRegion, ...rest] = getAllRegions({ shouldReturnEntireJson: true });
+    const [middleEastRegion, northEastRegion, northRegion, ...rest] = getAllRegions({ shouldReturnEntireJson: true });
     expect(northRegion.regionName).toEqual('Norte');
     _.forEach(northRegion.states, (state) => {
       const stateIndex = northRegionStates.indexOf(state.state);
@@ -22,16 +22,16 @@ describe('getAllRegions', () => {
   });
   it('MiddleEast region should have the right states', () => {
     const middleEastRegionStates = ['Distrito Federal', 'Goiás', 'Mato Grosso', 'Mato Grosso do Sul'];
-    const [northRegion, northEastRegion, middleEastRegion, ...rest] = getAllRegions({ shouldReturnEntireJson: true });
+    const [middleEastRegion, ...rest] = getAllRegions({ shouldReturnEntireJson: true });
     expect(middleEastRegion.regionName).toEqual('Centro-Oeste');
-    _.forEach(middleEastRegion.states, (state) => {
+    _.forEach(middleEastRegion.states, (state: string) => {
       const stateIndex = middleEastRegionStates.indexOf(state.state);
       expect(state.state).toEqual(middleEastRegionStates[stateIndex]);
     });
   });
   it('SouthEast region should have the right states', () => {
     const southEastStates = ['São Paulo', 'Rio de Janeiro', 'Espírito Santo', 'Minas Gerais'];
-    const [northRegion, northEastRegion, middleEastRegion, southEastRegion, ...rest] = getAllRegions({ shouldReturnEntireJson: true });
+    const [middleEastRegion, northEastRegion, northRegion, southEastRegion, ...rest] = getAllRegions({ shouldReturnEntireJson: true });
     expect(southEastRegion.regionName).toEqual('Sudeste');
     _.forEach(southEastRegion.states, (state) => {
       const stateIndex = southEastStates.indexOf(state.state);
@@ -40,7 +40,7 @@ describe('getAllRegions', () => {
   });
   it('South region should have the right states', () => {
     const southRegionStates = ['Paraná', 'Rio Grande do Sul', 'Santa Catarina'];
-    const [northRegion, northEastRegion, middleEastRegion, southEastRegion, southRegion] = getAllRegions({ shouldReturnEntireJson: true });
+    const [middleEastRegion, northEastRegion, northRegion, southEastRegion, southRegion] = getAllRegions({ shouldReturnEntireJson: true });
     expect(southRegion.regionName).toEqual('Sul');
     _.forEach(southRegion.states, (state) => {
       const stateIndex = southRegionStates.indexOf(state.state);
@@ -48,7 +48,7 @@ describe('getAllRegions', () => {
     });
   });
   it('should return only regions names if shouldReturnEntireJson is not set', () => {
-    const [northRegion, northEastRegion, middleEastRegion, southEastRegion, southRegion] = getAllRegions({});
+    const [middleEastRegion, northEastRegion, northRegion, southEastRegion, southRegion] = getAllRegions({});
     expect(northRegion).toEqual('Norte');
     expect(northEastRegion).toEqual('Nordeste');
     expect(middleEastRegion).toEqual('Centro-Oeste');
