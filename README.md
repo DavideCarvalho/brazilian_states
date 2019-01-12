@@ -149,7 +149,7 @@ const region = getRegion({ region: ['Norte'] });
   ]
 }]
 */
-const [southRegion, southEastRegion, middleEastRegion, northEastRegion, northRegion] = getRegion({ region: ['Sul', 'Sudeste', 'Centro-Oeste', 'Nordeste', 'Norte'] });
+const [middleEastRegion, northEastRegion, northRegion, southEastRegion, southRegion] = getRegion({ region: ['Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul'] });
 // each of these variables will have the same type of object as above, changing the regionName for each region name and its respectives states
 ```
 
