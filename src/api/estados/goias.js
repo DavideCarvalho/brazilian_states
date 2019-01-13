@@ -1,6 +1,6 @@
 // @flow
 const go: stateType = {
-  state: 'goiania',
+  state: 'goias',
   abbreviation: 'go',
   cities: [
     'Abadia de Goiás',
