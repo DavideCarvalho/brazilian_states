@@ -45,7 +45,7 @@
     "eslint-config-prettier": "2.10.0",
     "eslint-plugin-flowtype": "2.46.3",
     "eslint-plugin-import": "2.11.0",
-    "eslint-plugin-prettier": "2.6.0",
+    "eslint-plugin-prettier": "2.7.0",
     "flow-bin": "0.70.0",
     "flow-remove-types": "1.2.3",
     "mocha": "5.1.1",
