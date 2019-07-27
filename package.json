@@ -41,7 +41,7 @@
     "documentation": "12.0.3",
     "eslint": "6.1.0",
     "eslint-config-airbnb": "17.1.1",
-    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-config-airbnb-base": "13.2.0",
     "eslint-config-prettier": "2.10.0",
     "eslint-plugin-flowtype": "2.50.3",
     "eslint-plugin-import": "2.18.2",
