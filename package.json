@@ -48,7 +48,7 @@
     "eslint-plugin-prettier": "2.7.0",
     "flow-bin": "0.104.0",
     "flow-remove-types": "1.2.3",
-    "mocha": "5.2.0",
+    "mocha": "6.2.0",
     "nodemon": "1.19.1",
     "nyc": "11.9.0"
   },
