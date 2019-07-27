@@ -40,7 +40,7 @@
     "coveralls": "3.0.5",
     "documentation": "12.0.3",
     "eslint": "4.19.1",
-    "eslint-config-airbnb": "16.1.0",
+    "eslint-config-airbnb": "17.1.1",
     "eslint-config-airbnb-base": "12.1.0",
     "eslint-config-prettier": "2.10.0",
     "eslint-plugin-flowtype": "2.46.3",
