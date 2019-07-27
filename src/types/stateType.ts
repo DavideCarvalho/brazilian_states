@@ -7,7 +7,7 @@
  * @property {String[]} cities - Array with state cities
  */
 export type stateType = {
-  state: string,
-  abbreviation: string,
-  cities: string[]
+  state: string;
+  abbreviation: string;
+  cities: string[];
 };

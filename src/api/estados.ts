@@ -1,8 +1,8 @@
-// @flow
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import forEach from 'lodash/forEach';
 import map from 'lodash/map';
+import reduce from 'lodash/reduce';
 import removeAccents from 'remove-accents';
 import { memoizedCityType } from '../types/memoizedCityType';
 import { memoizedRegionWithStateType } from '../types/memoizedRegionWithStateType';
@@ -36,8 +36,6 @@ import sc from './estados/santacatarina';
 import sp from './estados/saopaulo';
 import se from './estados/sergipe';
 import to from './estados/tocantins';
-
-const api: any = {};
 
 const states: stateType[] = [
   ac,
@@ -116,33 +114,37 @@ const northEastRegionStatesAndCities =
 const middleEastRegionStatesAndCities =
   filter(states, state => middleEastRegionStates.indexOf(state.state) !== -1);
 
-const southEastRegionData = {
+const southEastRegionData: regionType = {
   regionName: 'Sudeste',
   states: southEastRegionStatesAndCities,
 };
 
-const southRegionData = {
+const southRegionData: regionType = {
   regionName: 'Sul',
   states: southRegionStatesAndCities,
 };
 
-const northRegionData = {
+const northRegionData: regionType = {
   regionName: 'Norte',
   states: northRegionStatesAndCities,
 };
 
-const northEastRegionData = {
+const northEastRegionData: regionType = {
   regionName: 'Nordeste',
   states: northEastRegionStatesAndCities,
 };
 
-const middleEastRegionData = {
+const middleEastRegionData: regionType = {
   regionName: 'Centro-Oeste',
   states: middleEastRegionStatesAndCities,
 };
 
-const regions = {
-  ['centrooeste']: middleEastRegionData,
+type regionsType = {
+  [regionName: string]: regionType;
+};
+
+const regions: regionsType = {
+  centrooeste: middleEastRegionData,
   nordeste: northEastRegionData,
   norte: northRegionData,
   sudeste: southEastRegionData,
@@ -166,12 +168,11 @@ export const checkIfVariableIsBoolean = (variable: boolean, variableName: string
 export const requiredParam = (param: string) => {
   const requiredParamError: Error = new Error(`Required parameter, "${param}" is missing.`);
   // preserve original stack trace
-  if (typeof Error.captureStackTrace === 'function') {
+  if (typeof Error.captureStackTrace === 'function')
     Error.captureStackTrace(
       requiredParamError,
       requiredParam,
     );
-  }
   throw requiredParamError;
 };
 
@@ -180,7 +181,7 @@ export const getAllRegions = ({
   }: {
     shouldReturnEntireJson: boolean,
   }): regionType[] | string[] => {
-  if (shouldReturnEntireJson === null) throw new Error('shouldReturnEntireJson property cannot be null ');
+  if (shouldReturnEntireJson === null) throw new Error('shouldReturnEntireJson property cannot be null');
   checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
   if (shouldReturnEntireJson) return map(regions, region => region);
   return map(regions, region => region.regionName);
@@ -198,12 +199,16 @@ export const getRegion = ({ region = requiredParam('region') }: { region: string
 export const getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType | {} => {
   if (!state) throw new Error('state property cannot be null or undefined');
   if (typeof state !== 'string') throw new Error('variable state should be a string');
-  const memoizedStateRegion = memoizedRegions[state];
+  const normalizedStateName = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
+  const memoizedStateRegion = memoizedRegions[normalizedStateName];
   if (!memoizedStateRegion) {
-    const foundRegion = find(regions, region => find(region.states, (regionState) => {
-      const normalizedStateName = removeAccents(state.replace(/\s|-|_/g).toLowerCase());
-      return removeAccents(regionState.state.replace(/\s|-|_/g).toLowerCase()) === normalizedStateName;
-    }));
+    const foundRegion: regionType | null = reduce(regions, (acc: regionType, region: regionType) => {
+      const filteredRegion: stateType[] = region.states.filter(regionState => {
+        return removeAccents(regionState.state.replace(/\s|-|_/g, '').toLowerCase()) === normalizedStateName;
+      });
+      if (filteredRegion.length > 0) return region;
+      return acc;
+    }, null as unknown as regionType);
     if (!foundRegion) return {};
     memoizedRegions[state] = foundRegion;
     return foundRegion;
@@ -216,13 +221,18 @@ export const getCityRegion = ({
   shouldReturnEntireJson = false,
 }: {
     city: string,
-    shouldReturnEntireJson: boolean,
-  }): string | regionType | stateType => {
+    shouldReturnEntireJson?: boolean,
+  }): string | {} => {
   if (typeof city !== 'string') throw new Error('city parameter must be a string');
   if (typeof shouldReturnEntireJson !== 'boolean') throw new Error('shouldReturnEntireJson parameter must be a string');
   const memoizedCityRegion: regionWithStateType = memoizedRegions[city];
-  if(!memoizedCityRegion) {
-    const foundRegion = find(regions, region => find((region.states as any), state => state.cities.indexOf(city) >= 0));
+  if (!memoizedCityRegion) {
+    const foundRegion = find(regions, (region: regionType) =>
+        !!find((region.states), (state: stateType) => state.cities.indexOf(city) >= 0));
+    if (!foundRegion) {
+      if (shouldReturnEntireJson) return {};
+      return '';
+    }
     const [foundState] = filter(foundRegion.states, state => state.cities.indexOf(city) >= 0);
     const foundRegionWithCityState = { ...foundRegion, cityState: foundState };
     memoizedRegions[city] = foundRegionWithCityState;
@@ -242,25 +252,23 @@ export const getCityRegion = ({
  * const cities = api.getStateCities({ state: 'São Paulo' });
  * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
  */
-export const getStateCities = ({ state = requiredParam('state') }: { state: string }): stateType => {
+export const getStateCities = ({ state = requiredParam('state') }: { state: string }): stateType | null => {
   if (!state) throw new Error('state property cannot be null or undefined');
   if (typeof state !== 'string') throw new Error ('state property must be a string');
   const normalizedState = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
   const memoizedState: stateType = memoizedStates[normalizedState];
-  if (memoizedState) {
-    return memoizedState;
-  }
+  if (memoizedState) return memoizedState;
   const findStateInstantiated = findState(state);
-  const stateFound: stateType | null = find(states, findStateInstantiated);
-  if (stateFound) {
-    memoizedStates[normalizedState] = stateFound;
-  }
+  const stateFound: stateType | undefined = find(states, findStateInstantiated);
+  if (!stateFound) return null;
+  if (stateFound) memoizedStates[normalizedState] = stateFound;
   return stateFound;
 };
 
 const findState = (state: string) => {
   const normalizedState = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
-  return (element) => removeAccents(element.state.replace(/\s|-|_/g, '').toLowerCase()) === normalizedState || element.abbreviation === normalizedState;
+  return (element: stateType) => removeAccents(element.state.replace(/\s|-|_/g, '').toLowerCase()) === normalizedState
+      || element.abbreviation === normalizedState;
 };
 
 /**
@@ -305,14 +313,14 @@ export const getCityState = ({
 }: {
   city: string,
   shouldReturnEntireJson?: boolean,
-}): string | stateType | {} => {
+}): string | stateType | null => {
   checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
   const normalizedCity = removeAccents(city.replace(/\s|-|_/g, '').toLowerCase());
   const memoizedCity = memoizedCities[normalizedCity];
   if (memoizedCity) return shouldReturnEntireJson ? memoizedCity : memoizedCity.state;
   const findCity = (element: stateType): boolean => element.cities.indexOf(normalizedCity) >= 0;
-  const state: stateType = find(normalizedCities, findCity);
-  if (!state) return shouldReturnEntireJson ? {} : '';
+  const state: stateType | undefined = find(normalizedCities, findCity);
+  if (!state) return null;
   const stateIndex = normalizedCities.indexOf(state);
   const realState = states[stateIndex];
   memoizedCities[normalizedCity] = realState;
@@ -328,10 +336,10 @@ export const getCityState = ({
  */
 export const eagerMemoization = (): void => {
   forEach(states, (state: stateType) => {
-    const normalizedStateName = removeAccents(state.state.replace(/\s|-|_/g).toLowerCase());
+    const normalizedStateName = removeAccents(state.state.replace(/\s|-|_/g, '').toLowerCase());
     memoizedStates[normalizedStateName] = state;
     forEach(state.cities, (city: string) => {
-      const normalizedCityName = removeAccents(city.replace(/\s|-|_/g).toLowerCase());
+      const normalizedCityName = removeAccents(city.replace(/\s|-|_/g, '').toLowerCase());
       memoizedCities[normalizedCityName] = state;
     });
   });

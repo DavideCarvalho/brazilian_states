@@ -6,5 +6,5 @@ import { regionWithStateType } from './regionWithStateType';
  * @property {regionWithStateType} cityOrStateName - Name of the city or the state that has been memoized inside the json
  */
 export type memoizedRegionWithStateType = {
-  [cityOrStateName: string]: regionWithStateType
+  [cityOrStateName: string]: regionWithStateType;
 };

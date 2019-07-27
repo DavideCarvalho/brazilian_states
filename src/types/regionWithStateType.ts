@@ -8,7 +8,6 @@ import { stateType } from './stateType';
  * @property {stateType} state - state this city belongs to
  */
 export type regionWithStateType = {
-  regionName: string,
-  states: stateType[],
-  state: stateType
+  regionName: string;
+  states: stateType[];
 };

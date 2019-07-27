@@ -34,9 +34,9 @@ describe('getStateCities', () => {
     const cities = getStateCities({ state: 'sao_paulo' });
     expect(cities).toEqual(spCities);
   });
-  it('should return undefined if fullname state not found', () => {
+  it('should return null if fullname state not found', () => {
     const cities = getStateCities({ state: 'someRandomState' });
-    expect(cities).toEqual(undefined);
+    expect(cities).toEqual(null);
   });
   it('should return the given state from abbreviation', () => {
     const cities = getStateCities({ state: 'sp' });
@@ -55,9 +55,9 @@ describe('getStateCities', () => {
         expect(this.filter('fastest').map('name')).toBe('SecondCall')
       });
   });
-  it('should return undefined if abbreviation state not found', () => {
+  it('should return null if abbreviation state not found', () => {
     const cities = getStateCities({ state: 'someRandomState' });
-    expect(cities).toEqual(undefined);
+    expect(cities).toEqual(null);
   });
   it('should throw an error if no parameter is passed to the function', () => {
     expect(() => getStateCities()).toThrow();
@@ -78,7 +78,7 @@ describe('getStateCities', () => {
       })
       .on('complete', function() {
         // console.log('Fastest is ' + this.filter('fastest').map('name'));
-        expect(this.filter('fastest').map('name')).toBe('SecondCall')
-      })
+        expect(this.filter('fastest').map('name')).toBe('SecondCall');
+      });
   });
 });

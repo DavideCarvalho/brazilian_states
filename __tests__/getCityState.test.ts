@@ -1,13 +1,12 @@
-import _ from 'lodash';
-import util from 'util';
-import { performance as _performance } from 'perf_hooks';
-import { getCityState, eagerMemoization } from '../src/api/estados';
-import spCities from '../src/api/estados/saopaulo';
 import Benchmark from 'benchmark';
+import util from 'util';
+import {eagerMemoization, getCityState} from '../src/api/estados';
+import spCities from '../src/api/estados/saopaulo';
+
 const suite = new Benchmark.Suite;
 
 const debug = util.debuglog('performance');
-let getCityStateOnDemandMemoizedRun = {};
+const getCityStateOnDemandMemoizedRun = {};
 
 describe('getCityState', () => {
   it('should return json object of the state that has the given city if shouldReturnEntireJson is set to true', () => {
@@ -49,8 +48,8 @@ describe('getCityState', () => {
         getCityState({ city: 'Santos', shouldReturnEntireJson: true });
       })
       .on('complete', function() {
-        expect(this.filter('fastest').map('name')).toBe('SecondCall')
-      })
+        expect(this.filter('fastest').map('name')).toBe('SecondCall');
+      });
   });
   it('should return only the name of the state if shouldReturnEntireJson is not set', () => {
     expect(getCityState({ city: 'Santos' })).toEqual('São Paulo');
@@ -58,16 +57,16 @@ describe('getCityState', () => {
   it('should return only the name of the state if shouldReturnEntireJson is set to false', () => {
     expect(getCityState({ city: 'Santos', shouldReturnEntireJson: false })).toEqual('São Paulo');
   });
-  it('should return empty array if nothing is found and shouldReturnEntireJson is true', () => {
+  it('should return null if nothing is found and shouldReturnEntireJson is true', () => {
     expect(getCityState({ city: 'asldjoijsda', shouldReturnEntireJson: true }))
-      .toEqual({});
+      .toEqual(null);
   });
-  it('should return empty string if nothing is found and shouldReturnEntireJson is false', () => {
+  it('should return null if nothing is found and shouldReturnEntireJson is false', () => {
     expect(getCityState({ city: 'asldjoijsda', shouldReturnEntireJson: false }))
-      .toEqual('');
+      .toEqual(null);
   });
-  it('should return empty string if nothing is found and shouldReturnEntireJson is not set', () => {
-    expect(getCityState({ city: 'asldjoijsda' })).toEqual('');
+  it('should return null if nothing is found and shouldReturnEntireJson is not set', () => {
+    expect(getCityState({ city: 'asldjoijsda' })).toEqual(null);
   });
   it('should throw an error if no object is set', () => {
     expect(() => getCityState()).toThrow();
@@ -88,6 +87,6 @@ describe('getCityState', () => {
       })
       .on('complete', function() {
         expect(this.filter('fastest').map('name')).toBe('SecondCall')
-      })
+      });
   });
 });

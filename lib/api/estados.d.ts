@@ -13,8 +13,8 @@ export declare const getStateRegion: ({ state }: {
 }) => {} | regionType;
 export declare const getCityRegion: ({ city, shouldReturnEntireJson, }: {
     city: string;
-    shouldReturnEntireJson: boolean;
-}) => string | stateType | regionType;
+    shouldReturnEntireJson?: boolean | undefined;
+}) => string | {};
 /**
  * This function returns an array with the cities of the given state
  * @param {Object} stateObject - The object the tells the name of the state.
@@ -26,7 +26,7 @@ export declare const getCityRegion: ({ city, shouldReturnEntireJson, }: {
  */
 export declare const getStateCities: ({ state }: {
     state: string;
-}) => stateType;
+}) => stateType | null;
 /**
  * This function receives the city name and returns the full json stateType object
  * or only the name of the state depending on shouldReturnEntireJson property.
@@ -66,7 +66,7 @@ export declare const getStateCities: ({ state }: {
 export declare const getCityState: ({ city, shouldReturnEntireJson, }: {
     city: string;
     shouldReturnEntireJson?: boolean | undefined;
-}) => string | {} | stateType;
+}) => string | stateType | null;
 /**
  * Function that memoize all the states and cities, doing it eagerly.
  * @example
