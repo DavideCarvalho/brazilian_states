@@ -48,7 +48,7 @@
     "coveralls": "3.0.2",
     "documentation": "6.3.3",
     "jest": "23.6.0",
-    "nodemon": "1.18.9",
+    "nodemon": "1.19.1",
     "nyc": "11.9.0",
     "rimraf": "2.6.3",
     "tslint": "5.12.1",
