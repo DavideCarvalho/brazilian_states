@@ -38,7 +38,7 @@
     "babel-preset-import-export": "1.0.2",
     "chai": "4.2.0",
     "coveralls": "3.0.5",
-    "documentation": "6.3.3",
+    "documentation": "12.0.3",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "16.1.0",
     "eslint-config-airbnb-base": "12.1.0",
