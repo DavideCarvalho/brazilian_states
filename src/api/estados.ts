@@ -179,7 +179,7 @@ export const requiredParam = (param: string) => {
 export const getAllRegions = ({
     shouldReturnEntireJson = false,
   }: {
-    shouldReturnEntireJson: boolean,
+    shouldReturnEntireJson?: boolean,
   }): regionType[] | string[] => {
   if (shouldReturnEntireJson === null) throw new Error('shouldReturnEntireJson property cannot be null');
   checkIfVariableIsBoolean(shouldReturnEntireJson, 'shouldReturnEntireJson');
@@ -196,7 +196,7 @@ export const getRegion = ({ region = requiredParam('region') }: { region: string
   });
 };
 
-export const getStateRegion = ({ state = requiredParam('state') }: { state: string }): regionType | {} => {
+export const getStateRegion = ({ state = requiredParam('state'), shouldReturnEntireJson = false }: { state: string, shouldReturnEntireJson?: boolean }): string | regionType | null => {
   if (!state) throw new Error('state property cannot be null or undefined');
   if (typeof state !== 'string') throw new Error('variable state should be a string');
   const normalizedStateName = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
@@ -209,11 +209,11 @@ export const getStateRegion = ({ state = requiredParam('state') }: { state: stri
       if (filteredRegion.length > 0) return region;
       return acc;
     }, null as unknown as regionType);
-    if (!foundRegion) return {};
+    if (!foundRegion) return null;
     memoizedRegions[state] = foundRegion;
-    return foundRegion;
+    return shouldReturnEntireJson ? foundRegion : foundRegion.regionName;
   }
-  return memoizedStateRegion;
+  return shouldReturnEntireJson ? memoizedStateRegion : memoizedStateRegion.regionName;
 };
 
 export const getCityRegion = ({
@@ -222,17 +222,14 @@ export const getCityRegion = ({
 }: {
     city: string,
     shouldReturnEntireJson?: boolean,
-  }): string | {} => {
+  }): string | regionWithStateType | null => {
   if (typeof city !== 'string') throw new Error('city parameter must be a string');
   if (typeof shouldReturnEntireJson !== 'boolean') throw new Error('shouldReturnEntireJson parameter must be a string');
   const memoizedCityRegion: regionWithStateType = memoizedRegions[city];
   if (!memoizedCityRegion) {
     const foundRegion = find(regions, (region: regionType) =>
         !!find((region.states), (state: stateType) => state.cities.indexOf(city) >= 0));
-    if (!foundRegion) {
-      if (shouldReturnEntireJson) return {};
-      return '';
-    }
+    if (!foundRegion) return null;
     const [foundState] = filter(foundRegion.states, state => state.cities.indexOf(city) >= 0);
     const foundRegionWithCityState = { ...foundRegion, cityState: foundState };
     memoizedRegions[city] = foundRegionWithCityState;
@@ -297,15 +294,15 @@ const findState = (state: string) => {
  *
  * @example
  * const cities = api.getCityState({ city: 'randomCity' });
- * // ''
+ * // null
  *
  * @example
  * const cities = api.getCityState({ city: 'randomCity' , shouldReturnEntireJson: false});
- * // ''
+ * // null
  *
  * @example
  * const cities = api.getCityState({ city: 'randomCity', shouldReturnEntireJson: true });
- * // {}
+ * // null
  */
 export const getCityState = ({
   city = requiredParam('city'),

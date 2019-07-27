@@ -35,7 +35,7 @@ import brStates from 'br_states';
 
 ## Methods
 
-### `getStateCities({state: string!}): {cities: state: string, abbreviation: string, cities:Array<string>}`
+### `getStateCities({ state: string }): stateType | null`
 
 This method take one parameter (this parameter is required, otherwise it will throw an error) with the state name or abbreviation and returns its cities;
 
@@ -62,7 +62,7 @@ const saoPauloCitiesNotExactlyFourth = getStateCities({ state: 'saopaulo' });
 // those two return the same thing
 ```
 
-### `getCityState({city: string!, shouldReturnEntireJson: boolean = false}): string | {cities: state: string, abbreviation: string, cities:Array<string>}`
+### `getCityState({city: string, shouldReturnEntireJson?: boolean}): string | stateType | null`
 
 If you have the name of the city and want to get the name of its state, this method is for you.
 Just put the name on city parameter and it will return you the entire json object or only the state name (based on shouldReturnEntireJson value, if shouldReturnEntireJson is not set, the default value is false).
@@ -105,7 +105,7 @@ const guarujaStateExactly = getStateCities({ city: 'Guarujá' });
 
 You can work with brazilian regions too!
 
-### `getAllRegions({shouldReturnEntireJson: boolean = false}): Array<string> | Array<stateType>`
+### `getAllRegions({shouldReturnEntireJson?: boolean}): regionType[] | string[]`
 
 This function will return all regions for you. If you don't pass `shouldReturnEntireJson` or set it to `false`, it will return only the name of the regions. If `shouldReturnEntireJson` is `true`, it will return all the regions and within the regions, all the states, each of them with each city.
 
@@ -133,7 +133,7 @@ const allRegionsObjectsSettingShouldReturnEntireJson = getAllRegions({
 */
 ```
 
-### `getRegion({ region: Array<string> }): Array<stateType>`
+### `getRegion({ region: string[] }): regionType[]`
 
 If you don't need all the regions, you can use this method. send an ``Array of string`` to the ``region`` property and it will return the states of every region sent on the array.
 
@@ -153,7 +153,7 @@ const [middleEastRegion, northEastRegion, northRegion, southEastRegion, southReg
 // each of these variables will have the same type of object as above, changing the regionName for each region name and its respectives states
 ```
 
-### `getStateRegion({ state: string, shouldReturnEntireJson: boolean })`
+### `getStateRegion({ state: string, shouldReturnEntireJson?: boolean }): string | regionType | null`
 
 You can look get a region based on a state! Just send the state name on `state` property and it will return the region name. If you send `shouldReturnEntireJson`, it will return the entire region object.
 ```javascript
@@ -176,7 +176,7 @@ const regionObjectBasedOnStateName = getStateRegion({ state: 'São Paulo', shoul
 
 The state name is normalized, so you can write your state in more ways and still get the right result!
 
-### `getCityRegion({ city: string, shouldReturnEntireJson: boolean })`
+### `getCityRegion({city: string, shouldReturnEntireJson?: boolean}): string | regionWithStateType | null`
 
 If you just have the name of the city and want its region, you can still look for it! `getCityRegion` is here to help you with that, send a json with a property called `city` on the function parameter and it will return the region name. Like other methods, send `shouldReturnEntireJson` with `true` boolean value (NOT STRING) and it will return the json object with the region, and the state this city belongs separated from the other states.
 
@@ -193,9 +193,6 @@ const regionObjectBasedOnStateName = getCityRegion({ city: 'São Paulo', shouldR
   regionName: Sudeste
   states: [
     // all the states of this region
-  ]
-  state: [
-    // state where this city belongs
   ]
 }]
 */

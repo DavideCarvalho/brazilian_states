@@ -8,6 +8,6 @@ import { stateType } from "./stateType";
  * @property {stateType[]} states - Array with states of this region
  */
 export type regionType = {
-  regionName: string,
-  states: stateType[]
+  regionName: string;
+  states: stateType[];
 };
