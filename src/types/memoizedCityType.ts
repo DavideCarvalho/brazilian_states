@@ -6,5 +6,5 @@ import { stateType } from './stateType';
  * @property {stateType} cityName - Name of the city, the name of the city is dinamic, e.g: Santos: stateType
  */
 export type memoizedCityType = {
-  [cityName: string]: stateType
+  [cityName: string]: stateType;
 };

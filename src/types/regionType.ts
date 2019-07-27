@@ -1,6 +1,4 @@
-import { stateType } from "./stateType";
-
-// @flow
+import { stateType } from './stateType';
 /**
  * Type with region and its states
  * @typedef {Object} regionType

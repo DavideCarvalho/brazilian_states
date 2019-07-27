@@ -1,8 +1,8 @@
 import { stateType } from '../../types/stateType';
 
 const ac: stateType = {
-  state: 'Acre',
   abbreviation: 'ac',
+  state: 'Acre',
   cities: [
     'Acrelândia',
     'Assis Brasil',
