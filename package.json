@@ -32,7 +32,7 @@
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.6",
-    "babel-plugin-add-module-exports": "0.3.3",
+    "babel-plugin-add-module-exports": "1.0.2",
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-preset-flow": "6.23.0",
     "babel-preset-import-export": "1.0.2",
