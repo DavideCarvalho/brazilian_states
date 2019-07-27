@@ -50,7 +50,7 @@
     "flow-remove-types": "1.2.3",
     "mocha": "5.2.0",
     "nodemon": "1.19.1",
-    "nyc": "11.9.0"
+    "nyc": "14.1.1"
   },
   "nyc": {
     "exclude": [
