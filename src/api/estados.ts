@@ -188,7 +188,7 @@ export const getAllRegions = ({
 };
 
 export const getRegion = ({ region = requiredParam('region') }: { region: string[] }): regionType[] => {
-  if (!region) throw new Error('region parameter cannot be null or undefined');
+  if (!region) throw new Error('region property cannot be null');
   if (!Array.isArray(region)) throw new Error('region parameter should be an Array');
   return map(region, singleRegion => {
     const normalizedRegionName = removeAccents(singleRegion.replace(/\s|-|_/g, '').toLowerCase());
@@ -197,8 +197,8 @@ export const getRegion = ({ region = requiredParam('region') }: { region: string
 };
 
 export const getStateRegion = ({ state = requiredParam('state'), shouldReturnEntireJson = false }: { state: string, shouldReturnEntireJson?: boolean }): string | regionType | null => {
-  if (!state) throw new Error('state property cannot be null or undefined');
-  if (typeof state !== 'string') throw new Error('variable state should be a string');
+  if (!state) throw new Error('state property cannot be null');
+  if (typeof state !== 'string') throw new Error('state property should be a string');
   const normalizedStateName = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
   const memoizedStateRegion = memoizedRegions[normalizedStateName];
   if (!memoizedStateRegion) {
@@ -223,6 +223,7 @@ export const getCityRegion = ({
     city: string,
     shouldReturnEntireJson?: boolean,
   }): string | regionWithStateType | null => {
+  if (city === null) throw new Error('city parameter cannot be null');
   if (typeof city !== 'string') throw new Error('city parameter must be a string');
   if (typeof shouldReturnEntireJson !== 'boolean') throw new Error('shouldReturnEntireJson parameter must be a string');
   const memoizedCityRegion: regionWithStateType = memoizedRegions[city];
@@ -250,7 +251,7 @@ export const getCityRegion = ({
  * // { state: 'São Paulo', abbreviation: 'sp', cities: ['Santos', 'São Vicente', 'Guarujá',...] }
  */
 export const getStateCities = ({ state = requiredParam('state') }: { state: string }): stateType | null => {
-  if (!state) throw new Error('state property cannot be null or undefined');
+  if (!state) throw new Error('state property cannot be null');
   if (typeof state !== 'string') throw new Error ('state property must be a string');
   const normalizedState = removeAccents(state.replace(/\s|-|_/g, '').toLowerCase());
   const memoizedState: stateType = memoizedStates[normalizedState];

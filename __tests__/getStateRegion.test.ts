@@ -30,4 +30,7 @@ describe('getStateRegion', () => {
   it('should throw if nothing is passed to the function', () => {
     expect(() => getStateRegion()).toThrow();
   });
+  it('should throw if state property is null', () => {
+    expect(() => getStateRegion({ state: null })).toThrow();
+  });
 });

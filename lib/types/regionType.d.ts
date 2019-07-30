@@ -1,4 +1,4 @@
-import { stateType } from "./stateType";
+import { stateType } from './stateType';
 /**
  * Type with region and its states
  * @typedef {Object} regionType

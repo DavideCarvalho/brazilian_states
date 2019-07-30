@@ -1,20 +1,22 @@
 import { regionType } from '../types/regionType';
+import { regionWithStateType } from '../types/regionWithStateType';
 import { stateType } from '../types/stateType';
 export declare const checkIfVariableIsBoolean: (variable: boolean, variableName: string) => void;
 export declare const requiredParam: (param: string) => never;
 export declare const getAllRegions: ({ shouldReturnEntireJson, }: {
-    shouldReturnEntireJson: boolean;
+    shouldReturnEntireJson?: boolean | undefined;
 }) => string[] | regionType[];
 export declare const getRegion: ({ region }: {
     region: string[];
 }) => regionType[];
-export declare const getStateRegion: ({ state }: {
+export declare const getStateRegion: ({ state, shouldReturnEntireJson }: {
     state: string;
-}) => {} | regionType;
+    shouldReturnEntireJson?: boolean | undefined;
+}) => string | regionType | null;
 export declare const getCityRegion: ({ city, shouldReturnEntireJson, }: {
     city: string;
     shouldReturnEntireJson?: boolean | undefined;
-}) => string | {};
+}) => string | regionWithStateType | null;
 /**
  * This function returns an array with the cities of the given state
  * @param {Object} stateObject - The object the tells the name of the state.
@@ -53,15 +55,15 @@ export declare const getStateCities: ({ state }: {
  *
  * @example
  * const cities = api.getCityState({ city: 'randomCity' });
- * // ''
+ * // null
  *
  * @example
  * const cities = api.getCityState({ city: 'randomCity' , shouldReturnEntireJson: false});
- * // ''
+ * // null
  *
  * @example
  * const cities = api.getCityState({ city: 'randomCity', shouldReturnEntireJson: true });
- * // {}
+ * // null
  */
 export declare const getCityState: ({ city, shouldReturnEntireJson, }: {
     city: string;
