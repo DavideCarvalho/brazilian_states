@@ -9,5 +9,5 @@ import { stateType } from './stateType';
 export declare type regionWithStateType = {
     regionName: string;
     states: stateType[];
-    cityState: stateType;
+    cityState?: stateType;
 };

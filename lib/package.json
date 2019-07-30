@@ -1,0 +1,77 @@
+{
+  "name": "br_states",
+  "version": "3.0.1",
+  "description": "",
+  "main": "api/estados.js",
+  "author": {
+    "name": "Davi de Carvalho",
+    "email": "davi_carvalho96@hotmail.com",
+    "url": "https://github.com/DavideCarvalho"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DavideCarvalho/brazilian_states"
+  },
+  "bugs": {
+    "url": "https://github.com/DavideCarvalho/brazilian_states/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "coverage": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "build": "rimraf lib && npm run build:types & npm run build:js && copyfiles -f ./lib/src/api/estados.d.ts ./lib/api && copyfiles -f ./lib/src/api/estados/*.d.ts ./lib/api/estados && copyfiles -f ./lib/src/types/*.d.ts ./lib/types && copyfiles -f package.json ./lib && rimraf lib/src && rimraf lib/__tests__",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --ignore */node_modules,*/__tests__ --out-dir lib --extensions \".ts\" --source-maps inline",
+    "generatedoc": "documentation build src/** -f md -o docs.md"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.119",
+    "lodash": "^4.17.13",
+    "remove-accents": "^0.4.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.5.5",
+    "@babel/core": "7.5.5",
+    "@babel/polyfill": "7.4.4",
+    "@babel/preset-env": "7.5.5",
+    "@babel/preset-typescript": "7.3.3",
+    "@babel/register": "7.5.5",
+    "@types/jest": "24.0.16",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "24.8.0",
+    "benchmark": "2.1.4",
+    "chai": "4.2.0",
+    "copyfiles": "2.1.1",
+    "coveralls": "3.0.5",
+    "documentation": "12.0.3",
+    "jest": "24.8.0",
+    "nodemon": "1.19.1",
+    "nyc": "11.9.0",
+    "rimraf": "2.6.3",
+    "tslint": "5.18.0",
+    "typescript": "3.5.3"
+  },
+  "nyc": {
+    "exclude": [
+      "src/api/estados/**.js",
+      "test"
+    ]
+  },
+  "jest": {
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "babel-jest"
+    }
+  }
+}
