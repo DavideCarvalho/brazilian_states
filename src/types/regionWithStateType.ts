@@ -10,5 +10,5 @@ import { stateType } from './stateType';
 export type regionWithStateType = {
   regionName: string;
   states: stateType[];
-  cityState: stateType;
+  cityState?: stateType;
 };

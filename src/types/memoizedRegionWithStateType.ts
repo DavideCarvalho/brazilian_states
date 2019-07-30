@@ -1,4 +1,5 @@
 // @flow
+import {regionType} from './regionType';
 import { regionWithStateType } from './regionWithStateType';
 /**
  * Type with state name, abbreviation and cities
