@@ -51,7 +51,7 @@
     "nodemon": "1.19.1",
     "nyc": "11.9.0",
     "rimraf": "2.6.3",
-    "tslint": "5.18.0",
+    "tslint": "6.1.0",
     "typescript": "3.5.3"
   },
   "nyc": {
