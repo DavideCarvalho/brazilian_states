@@ -50,6 +50,7 @@
     "jest": "24.8.0",
     "nodemon": "1.19.1",
     "nyc": "11.9.0",
+    "prettier": "^2.7.1",
     "rimraf": "2.6.3",
     "tslint": "5.18.0",
     "typescript": "3.5.3"

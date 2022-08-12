@@ -1,7 +1,7 @@
 import { stateType } from "../../types/stateType";
 
 const pr: stateType = {
-  state: 'Parana',
+  state: 'Paraná',
   abbreviation: 'pr',
   cities: [
     'Abatiá',

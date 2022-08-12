@@ -35,7 +35,7 @@ import brStates from 'br_states';
 
 ## Methods
 
-### `getStateCities({ state: string }): stateType | null`
+### `getStateCities({ state: string }): string[] | undefined`
 
 This method take one parameter (this parameter is required, otherwise it will throw an error) with the state name or abbreviation and returns its cities;
 
@@ -62,7 +62,7 @@ const saoPauloCitiesNotExactlyFourth = getStateCities({ state: 'saopaulo' });
 // those two return the same thing
 ```
 
-### `getCityState({city: string, shouldReturnEntireJson?: boolean}): string | stateType | null`
+### `getCityState({city: string, shouldReturnEntireJson?: boolean}): string | undefined`
 
 If you have the name of the city and want to get the name of its state, this method is for you.
 Just put the name on city parameter and it will return you the entire json object or only the state name (based on shouldReturnEntireJson value, if shouldReturnEntireJson is not set, the default value is false).

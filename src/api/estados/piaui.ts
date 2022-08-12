@@ -1,7 +1,7 @@
 import { stateType } from "../../types/stateType";
 
 const pi: stateType = {
-  state: 'Piaui',
+  state: 'Piauí',
   abbreviation: 'pi',
   cities: [
     'Acauã',

@@ -1,7 +1,7 @@
-import { stateType } from "../../types/stateType";
+import { stateType } from '../../types/stateType';
 
 const pa: stateType = {
-  state: 'Para',
+  state: 'Pará',
   abbreviation: 'pa',
   cities: [
     'Abaetetuba',

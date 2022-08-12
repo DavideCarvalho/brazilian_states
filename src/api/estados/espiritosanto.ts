@@ -1,7 +1,7 @@
 import { stateType } from "../../types/stateType";
 
 const es: stateType = {
-  state: 'Espirito Santo',
+  state: 'Espírito Santo',
   abbreviation: 'es',
   cities: [
     'Afonso Cláudio',

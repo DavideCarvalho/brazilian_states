@@ -1,7 +1,7 @@
 import { stateType } from '../../types/stateType';
 
 const go: stateType = {
-  state: 'goias',
+  state: 'Goiás',
   abbreviation: 'go',
   cities: [
     'Abadia de Goiás',

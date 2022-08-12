@@ -1,7 +1,7 @@
 import { stateType } from "../../types/stateType";
 
 const ap: stateType = {
-  state: 'Amapa',
+  state: 'Amapá',
   abbreviation: 'ap',
   cities: [
     'Amapá',
