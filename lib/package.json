@@ -49,7 +49,7 @@
     "documentation": "13.2.5",
     "jest": "24.9.0",
     "nodemon": "1.19.1",
-    "nyc": "11.9.0",
+    "nyc": "15.1.0",
     "rimraf": "3.0.2",
     "tslint": "5.18.0",
     "typescript": "3.5.3"
