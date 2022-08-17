@@ -46,7 +46,7 @@
     "chai": "4.2.0",
     "copyfiles": "2.1.1",
     "coveralls": "3.0.5",
-    "documentation": "13.2.2",
+    "documentation": "13.2.5",
     "jest": "26.0.0",
     "nodemon": "2.0.17",
     "nyc": "11.9.0",
