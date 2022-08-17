@@ -52,7 +52,7 @@
     "nyc": "11.9.0",
     "rimraf": "2.6.3",
     "tslint": "5.18.0",
-    "typescript": "3.5.3"
+    "typescript": "3.9.10"
   },
   "nyc": {
     "exclude": [
