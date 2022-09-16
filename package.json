@@ -48,7 +48,7 @@
     "coveralls": "3.1.1",
     "documentation": "13.2.5",
     "jest": "26.6.3",
-    "nodemon": "2.0.17",
+    "nodemon": "2.0.20",
     "nyc": "11.9.0",
     "prettier": "^2.7.1",
     "rimraf": "3.0.2",
